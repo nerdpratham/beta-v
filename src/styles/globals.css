@@ -1,0 +1,144 @@
+/* ─── GLOBAL STYLES — SixDX ─────────────────────────────────────────────── */
+
+@import "tailwindcss";
+@import "./tokens.css";
+@import "./typography.css";
+
+/* ── Reset ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ── Utility — will-change on animating elements only ──────────────────── */
+.will-animate {
+  will-change: transform, opacity;
+}
+
+/* ── Smooth scroll wrapper (Lenis target) ──────────────────────────────── */
+html.lenis, html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE OVERRIDES
+   Desktop (≥1200px) — untouched. All component inline styles govern.
+   Tablet  (810–1199px) — multi-column layouts collapse to stacked/2-col.
+   Mobile  (≤809px)  — single column, tighter padding.
+   !important overrides component-level inline styles without touching them.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── PrimaryButton — all instances ─────────────────────────────────────── */
+@media (max-width: 809px) {
+  .sixdx-primary-btn {
+    width: 100% !important;
+    filter: none !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    height: auto !important;
+  }
+  .sixdx-primary-pill {
+    flex: 1 !important;
+    padding-top: 0.75rem !important;
+    padding-bottom: 0.75rem !important;
+  }
+}
+
+/* ── Footer nav pills ───────────────────────────────────────────────────── */
+@media (max-width: 809px) {
+  .footer-nav-pills { flex-direction: column !important; gap: 0 !important; }
+  .footer-nav-pills > a {
+    text-align: left !important;
+    padding: 12px 16px !important;
+    border-bottom: 1px solid rgba(255,255,255,0.10) !important;
+  }
+}
+
+/* ── Stack Section ──────────────────────────────────────────────────────── */
+@media (max-width: 809px) {
+  .sixdx-stack-h2    { font-size: 20px !important; }
+  .sixdx-stack-stats { padding: 60px 16px !important; }
+}
+
+/* ── About Section ──────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .about-section     { padding: 80px 28px !important; }
+  .about-upper-row   { flex-direction: column !important; }
+  .about-lower-row   { flex-direction: column !important; }
+  .about-quote-col   { height: auto !important; }
+  .about-image-frame { height: 340px !important; }
+}
+@media (max-width: 809px) {
+  .about-section     { padding: 60px 16px !important; }
+  .about-image-frame { height: 240px !important; }
+}
+
+/* ── Work Section ───────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .work-header   { flex-direction: column !important; gap: 16px !important; }
+  .work-subtitle { width: 100% !important; }
+  .work-row      { flex-wrap: wrap !important; }
+  .work-row > *  { flex: 0 0 calc(50% - 6px) !important; height: 380px !important; }
+}
+@media (max-width: 809px) {
+  .work-section { padding: 60px 16px !important; }
+  .work-row > * { flex: 0 0 100% !important; height: 300px !important; }
+}
+
+/* ── What We Create Section ─────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .wwc-header       { flex-direction: column !important; gap: 24px !important; padding: 60px 28px !important; }
+  .wwc-desc         { width: 100% !important; flex-shrink: 1 !important; }
+  .wwc-details-bar  { flex-direction: column !important; gap: 12px !important; }
+  .wwc-details-body { width: 100% !important; flex-shrink: 1 !important; }
+}
+@media (max-width: 809px) {
+  .wwc-header      { padding: 60px 16px !important; }
+  .wwc-details-bar { padding: 16px !important; }
+}
+
+/* ── Contact Section ────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .contact-section { flex-direction: column !important; gap: 48px !important; padding: 80px 28px !important; }
+  .contact-form    { width: 100% !important; }
+  .contact-left    { max-width: 100% !important; }
+}
+@media (max-width: 809px) {
+  .contact-section { padding: 60px 16px !important; }
+  .contact-offices { flex-direction: column !important; }
+}
+
+/* ── Footer Section ─────────────────────────────────────────────────────── */
+@media (max-width: 1199px) {
+  .footer-main-row { flex-direction: column !important; gap: 48px !important; }
+  .footer-offices  { width: 100% !important; }
+}
+@media (max-width: 809px) {
+  .footer-gradient-block   { padding: 60px 16px 40px !important; gap: 80px !important; }
+  .footer-bottom-bar       { padding-left: 16px !important; padding-right: 16px !important; }
+  .footer-newsletter-card  { width: 100% !important; height: auto !important; aspect-ratio: 329 / 186; }
+}
