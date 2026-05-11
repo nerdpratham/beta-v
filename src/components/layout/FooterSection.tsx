@@ -41,10 +41,10 @@ const FOOTER_GRADIENT = `linear-gradient(
 const TAGLINE = 'Photorealistic. Technically accurate. Built for the environments where precision matters.'
 
 const NAV_PILLS = [
-  { label: 'Home',       href: '#' },
-  { label: 'About Us',   href: '#' },
-  { label: 'Our Work',   href: '#' },
-  { label: 'Contact Us', href: '#' },
+  { label: 'Differentiators',   href: '#' },
+  { label: 'How SixDX Works',   href: '#' },
+  { label: 'Work',              href: '#' },
+  { label: 'Testimonials',      href: '#' },
 ]
 
 const OFFICES = [
@@ -109,9 +109,8 @@ function NewsletterCard() {
     // Card: 329×186 in Figma, border-radius 12, white bg, overflow hidden
     <div
       onClick={!open ? handleOpen : undefined}
-      className="footer-newsletter-card"
+      className="footer-newsletter-card w-full md:w-[329px]"
       style={{
-        width        : 329,
         height       : 186,
         flexShrink   : 0,
         borderRadius : 12,
@@ -303,59 +302,51 @@ export default function FooterSection() {
                   + Main Container (offices + newsletter)
           Padding matches original footer: 100px top, 28px sides, 60px bottom.
       ══════════════════════════════════════════════════════════════════════ */}
-      <div className="footer-gradient-block" style={{
+      <div className="footer-gradient-block px-3 pt-10 pb-[60px] md:px-7 md:pt-[100px] md:pb-[60px] flex flex-col gap-10 md:gap-[200px] w-full box-border" style={{
         background   : FOOTER_GRADIENT,
-        padding      : '100px 28px 60px',
-        display      : 'flex',
-        flexDirection: 'column',
-        gap          : 200,          // Figma: gap between CTA_Container and Bottom_container
-        boxSizing    : 'border-box',
-        width        : '100%',
       }}>
 
         {/* ── CTA_CONTAINER — Figma 408:247 ────────────────────────────────── */}
-        <div style={{
-          display      : 'flex',
-          flexDirection: 'column',
-          gap          : 40,
-          position     : 'relative',
-          zIndex       : 1,
-        }}>
+        <div className="flex flex-col gap-10 relative z-10">
 
           {/* CTA block: tagline + button */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-            <h2 style={{
+          <div className="flex flex-col gap-8">
+            <h2 className="max-w-[52rem]" style={{
               ...textStyles.h1,
-              color   : colors.ink,
-              maxWidth: '52rem',
+              color: colors.ink,
             }}>
               {TAGLINE}
             </h2>
-            <div>
+            
+            {/* Desktop Button */}
+            <div className="hidden md:block">
               <PrimaryButton label="Get in touch" href="#contact" variant="brand" />
             </div>
+
+            {/* Mobile Button */}
+            <a href="#contact" className="md:hidden flex items-center justify-between w-full h-[52px] px-4 rounded-[2px]" style={{ background: colors.white, textDecoration: 'none' }}>
+              <span style={{ ...textStyles.bodyMedium, color: '#CC4D22' }}>Get in touch</span>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.71877 3.63733L13.4851 7.40367C14.0892 8.00777 13.6614 9.04081 12.807 9.04081H2.959C2.42914 9.04081 1.99981 9.47034 2 10.0002C2 10.5299 2.42933 10.959 2.959 10.959H12.807C13.6614 10.959 14.0892 11.9922 13.4851 12.5963L9.71877 16.3627C9.3443 16.7371 9.3443 17.3445 9.71877 17.719L9.71896 17.7192C10.0934 18.0936 10.7008 18.0936 11.0752 17.7192L18.1163 10.6781C18.4907 10.3037 18.4907 9.69632 18.1163 9.32185L11.0752 2.28085C10.7008 1.90638 10.0934 1.90638 9.71896 2.28085L9.71877 2.28104C9.3443 2.65551 9.3443 3.26287 9.71877 3.63733Z" fill="#CC4D22"/>
+              </svg>
+            </a>
           </div>
 
           {/* Menu Container — nav pills */}
-          <div className="footer-nav-pills" style={{ display: 'flex', gap: 2, width: '100%' }}>
+          <div className="footer-nav-pills flex flex-col md:flex-row gap-[2px] w-full">
             {NAV_PILLS.map(pill => (
               <a
                 key={pill.label}
                 href={pill.href}
+                className="flex items-center justify-start md:justify-center flex-1 w-full rounded-[2px] py-[14px] px-4 md:py-1 md:px-4 no-underline transition-colors duration-200"
                 style={{
                   ...textStyles.body,
-                  flex          : 1,
-                  color         : colors.white,
-                  background    : colors.ink10,
-                  borderRadius  : 2,
-                  padding       : '4px 16px',
-                  textDecoration: 'none',
-                  textAlign     : 'center',
-                  transition    : 'background 0.2s ease',
-                  boxSizing     : 'border-box',
+                  boxSizing: 'border-box',
+                  color: colors.ink, // Using ink instead of white, based on light background
+                  background: 'rgba(255, 255, 255, 0.4)',
                 }}
-                onMouseEnter={e => (e.currentTarget.style.background = colors.ink05)}
-                onMouseLeave={e => (e.currentTarget.style.background = colors.ink10)}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.6)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255, 255, 255, 0.4)')}
               >
                 {pill.label}
               </a>
@@ -365,22 +356,14 @@ export default function FooterSection() {
         </div>
 
         {/* ── MAIN CONTAINER — offices (left) + newsletter card (right) ─────── */}
-        <div className="footer-main-row" style={{
-          display       : 'flex',
-          justifyContent: 'space-between',
-          alignItems    : 'flex-start',
-          width         : '100%',
-          gap           : 4,
-          position      : 'relative',
-          zIndex        : 1,
-        }}>
+        <div className="footer-main-row flex flex-col md:flex-row justify-between items-start w-full gap-10 md:gap-4 relative z-10">
 
           {/* Office info columns */}
-          <div className="footer-offices" style={{ display: 'flex', gap: 28, width: 560, flexShrink: 0 }}>
+          <div className="footer-offices flex flex-col md:flex-row gap-10 md:gap-[28px] w-full md:w-[560px] shrink-0">
             {OFFICES.map(office => (
               <div
                 key={office.region}
-                style={{ flex: '1 0 0', display: 'flex', flexDirection: 'column', gap: 16, minWidth: 0 }}
+                className="flex flex-col gap-4 flex-1 min-w-0"
               >
                 <p style={{ ...textStyles.h4, color: colors.white, lineHeight: 1, whiteSpace: 'nowrap' }}>
                   {office.region}
@@ -390,10 +373,10 @@ export default function FooterSection() {
                   <p style={{ ...textStyles.label, lineHeight: 1.28, color: colors.white50 }}>
                     {office.company}<br />{office.address}
                   </p>
-                  <p style={{ ...textStyles.label, lineHeight: 1.28, color: colors.ink60 }}>
+                  <p style={{ ...textStyles.label, lineHeight: 1.28, color: colors.white50 }}>
                     {office.email}
                   </p>
-                  <p style={{ ...textStyles.label, lineHeight: 1.28, color: colors.ink60 }}>
+                  <p style={{ ...textStyles.label, lineHeight: 1.28, color: colors.white50 }}>
                     {office.phone}
                   </p>
                 </div>
@@ -411,15 +394,8 @@ export default function FooterSection() {
           Uses the darkest gradient stop (#1c0b05) as a flat background so it
           reads as a seamless continuation of the footer palette.
       ══════════════════════════════════════════════════════════════════════ */}
-      <div className="footer-bottom-bar" style={{
+      <div className="footer-bottom-bar flex flex-col md:flex-row justify-between items-center gap-4 md:gap-2 px-3 pb-3 md:px-7 md:pb-[14px] w-full box-border" style={{
         background    : '#1c0b05',
-        padding       : '0 28px 14px',
-        display       : 'flex',
-        justifyContent: 'space-between',
-        alignItems    : 'center',
-        gap           : 8,
-        boxSizing     : 'border-box',
-        width         : '100%',
       }}>
 
         <div style={{ display: 'flex', gap: 24 }}>

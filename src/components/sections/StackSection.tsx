@@ -110,7 +110,7 @@ export default function StackSection() {
 
     // Query stat cards directly from the DOM — bypasses any React ref array
     // quirks and guarantees we always get all 3 cards.
-    const statCards = [...section.querySelectorAll<HTMLDivElement>('[data-stat-card]')]
+    const statCards = Array.from(section.querySelectorAll<HTMLDivElement>('[data-stat-card]'))
 
     // Preload the background image so it's ready when the div expands
     const preload = new Image()
