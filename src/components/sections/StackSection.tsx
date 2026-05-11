@@ -125,7 +125,7 @@ export default function StackSection() {
         section.style.setProperty('--stack-progress', '1')
         gsap.set(whiteLayer, { autoAlpha: 1 })
         gsap.set([leftText, rightText], { autoAlpha: 0 })
-        gsap.set([heading, subtext, ...stats], { autoAlpha: 1 })
+        gsap.set([heading, subtext, ...statCards], { autoAlpha: 1 })
         return
       }
 
