@@ -117,10 +117,20 @@ export default function PrimaryButton({
   const isMobile = () => window.matchMedia('(max-width: 809px)').matches
 
   useLayoutEffect(() => {
-    const w = arrowRef.current?.offsetWidth ?? 42
+    const arrowEl  = arrowRef.current
+    const parentEl = arrowEl?.parentElement
+    // Size the arrow as a perfect square: side = button height
+    if (arrowEl && parentEl) {
+      const h = parentEl.offsetHeight
+      if (h > 0) {
+        arrowEl.style.width  = `${h}px`
+        arrowEl.style.height = `${h}px`
+      }
+    }
+    const w = arrowEl?.offsetWidth ?? 42
     const alwaysExpanded = expanded || isMobile()
-    gsap.set(arrowRef.current, { x: alwaysExpanded ? 0  : -w })
-    gsap.set(iconRef.current,  { opacity: alwaysExpanded ? 1 : 0 })
+    gsap.set(arrowEl,         { x: alwaysExpanded ? 0  : -w })
+    gsap.set(iconRef.current, { opacity: alwaysExpanded ? 1 : 0 })
   }, [expanded])
 
   // On mobile the arrow is always visible — skip hover/leave animations
@@ -210,7 +220,6 @@ export default function PrimaryButton({
         ref={arrowRef}
         style={{
           marginLeft:      '0.125rem',
-          aspectRatio:     '1 / 1',
           borderRadius:    '0.125rem',
           backgroundColor: arrowBg,
           transition:      'background-color 0.3s ease',
