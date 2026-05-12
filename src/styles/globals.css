@@ -126,6 +126,13 @@ html.lenis, html.lenis body {
   .wwc-details-bar { padding: 16px !important; }
 }
 
+/* ── Hero Section (mobile sticky scroll) ───────────────────────────────── */
+@media (max-width: 1199px) {
+  .hero-scroll-wrapper {
+    height: 400svh;
+  }
+}
+
 /* ── Contact Section ────────────────────────────────────────────────────── */
 @media (max-width: 1199px) {
   .contact-section { flex-direction: column !important; gap: 48px !important; padding: 80px 28px !important; }

@@ -151,6 +151,7 @@ function splitTextToChars(element: HTMLElement): HTMLElement[] {
 
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef   = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
   const textRefs   = useRef<(HTMLDivElement | null)[]>([])
@@ -339,13 +340,8 @@ export default function Hero() {
           if (chars.length) gsap.set(chars, { opacity: i === 0 ? 1 : 0 })
         })
 
-        // ── Wrap section in a tall div so sticky has a bounded scroll area ──
-        const wrapper = document.createElement('div')
-        wrapper.style.cssText = 'position:relative; height:400svh;'
-        section.parentElement!.insertBefore(wrapper, section)
-        wrapper.appendChild(section)
-
-        // Make section sticky inside its wrapper
+        // Make section sticky inside the JSX wrapper (hero-scroll-wrapper).
+        // The wrapper's height is set to 400svh by CSS, giving scroll distance.
         section.style.position = 'sticky'
         section.style.top      = '0px'
 
@@ -392,9 +388,9 @@ export default function Hero() {
             }
           })
 
-          // Drive timeline from scroll progress through the wrapper
+          // Drive timeline from scroll progress through the JSX wrapper div
           ScrollTrigger.create({
-            trigger:             wrapper,
+            trigger:             wrapperRef.current,
             start:               'top top',
             end:                 'bottom bottom',
             scrub:               1,
@@ -407,9 +403,6 @@ export default function Hero() {
 
         return () => {
           mobileCtx.revert()
-          // Move section back out of wrapper and remove wrapper
-          wrapper.parentElement?.insertBefore(section, wrapper)
-          wrapper.remove()
           section.style.position = ''
           section.style.top      = ''
           video.loop  = false
@@ -457,6 +450,7 @@ export default function Hero() {
   }, [])
 
   return (
+    <div ref={wrapperRef} className="hero-scroll-wrapper">
     <section
       ref={sectionRef}
       aria-label="Hero"
@@ -574,5 +568,6 @@ export default function Hero() {
         <div className="w-px h-10 bg-white/60 animate-pulse" />
       </div>
     </section>
+    </div>
   )
 }
