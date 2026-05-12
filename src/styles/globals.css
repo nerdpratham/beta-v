@@ -65,6 +65,11 @@ html.lenis, html.lenis body {
     flex: 1 !important;
     padding-top: 0.75rem !important;
     padding-bottom: 0.75rem !important;
+    padding-left: 1.75rem !important;
+    justify-content: flex-start !important;
+  }
+  .sixdx-arrow-square {
+    margin-left: 0.5rem !important;
   }
 }
 

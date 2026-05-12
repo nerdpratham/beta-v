@@ -41,11 +41,9 @@ const HERO_RESPONSIVE_CSS = `
 `
 
 // ─── CONTENT — edit freely ────────────────────────────────────────────────────
-const PARAGRAPHS = [
-  'Every critical asset in your facility carries intelligence no manual captures and no schematic fully represents. Until now, it had nowhere to go.',
-  "25 years inside the world's most demanding plants translated into intelligence that works.",
-  'This is not automation replacing expertise. This is expertise, finally made permanent.',
-]
+const PARA_1 = 'Every critical asset in your facility carries intelligence no manual captures and no schematic fully represents. Until now, it had nowhere to go.'
+const PARA_2 = "25 years inside the world's most demanding plants translated into intelligence that works."
+const PARA_3 = 'This is not automation replacing expertise. This is expertise, finally made permanent.'
 // ─────────────────────────────────────────────────────────────────────────────
 
 // ─── TEXT STYLE — change heading appearance here ─────────────────────────────
@@ -327,11 +325,13 @@ export default function Hero() {
         }
       })
 
-      // ── Tablet + Mobile (≤1199px): static hero, video loops ───────────
+      // ── Tablet + Mobile (≤1199px): CSS sticky + scroll-driven text ────────
+      // Uses position:sticky (no GSAP pin) to avoid position:fixed conflicts
+      // with Lenis v1. A wrapper div provides the scroll distance; the section
+      // sticks inside it for the duration.
       mm.add('(max-width: 1199px)', () => {
-        video.src     = heroVideo
-        video.preload = 'metadata'
-        video.loop    = true
+        // Video: just set loop and play — src already set from JSX prop.
+        video.loop = true
         void video.play().catch(() => { /* autoplay blocked — poster shows */ })
 
         // Para 0 visible immediately, rest hidden
@@ -339,49 +339,81 @@ export default function Hero() {
           if (chars.length) gsap.set(chars, { opacity: i === 0 ? 1 : 0 })
         })
 
-        // Auto-cycle through all three paragraphs on a timer
-        const HOLD    = 3.0   // seconds each paragraph stays fully visible
-        const FADE    = 0.4   // opacity sweep duration per char
-        const STAGGER = 0.25  // total stagger spread across all chars
+        // ── Wrap section in a tall div so sticky has a bounded scroll area ──
+        const wrapper = document.createElement('div')
+        wrapper.style.cssText = 'position:relative; height:400svh;'
+        section.parentElement!.insertBefore(wrapper, section)
+        wrapper.appendChild(section)
 
-        const N     = s.allChars.length
-        const cycle = gsap.timeline({ repeat: -1 })
+        // Make section sticky inside its wrapper
+        section.style.position = 'sticky'
+        section.style.top      = '0px'
 
-        s.allChars.forEach((chars, i) => {
-          const nextChars = s.allChars[(i + 1) % N]
+        // ── Paused timeline — driven by scroll progress ──────────────────────
+        const mobileCtx = gsap.context(() => {
+          const tl = gsap.timeline({ paused: true })
 
-          // Hold current paragraph fully visible
-          cycle.to({}, { duration: HOLD })
+          const mobileSlots = [
+            { enter: -1,   exit: 0.25 },
+            { enter: 0.35, exit: 0.65 },
+            { enter: 0.75, exit: -1   },
+          ]
 
-          // Fade out current — right to left stagger
-          if (chars.length) {
-            cycle.to(chars, {
-              opacity: 0,
-              ease:    'none',
-              duration: FADE,
-              stagger: { amount: STAGGER, from: 'end' },
-            })
-          }
+          mobileSlots.forEach(({ enter, exit }, i) => {
+            const chars = s.allChars[i]
+            if (!chars?.length) return
 
-          // Fade in next — left to right stagger
-          if (nextChars?.length) {
-            cycle.fromTo(
-              nextChars,
-              { opacity: 0 },
-              {
-                opacity:  1,
-                ease:     'none',
-                duration: FADE,
-                stagger:  { amount: STAGGER, from: 'start' },
-              },
-            )
-          }
-        })
+            if (enter >= 0) {
+              tl.fromTo(
+                chars,
+                { opacity: 0 },
+                {
+                  opacity:  1,
+                  ease:     'none',
+                  duration: ANIM.fadeIn,
+                  stagger:  { amount: ANIM.staggerIn, from: 'start' },
+                },
+                enter,
+              )
+            }
+
+            if (exit >= 0) {
+              tl.fromTo(
+                chars,
+                { opacity: 1 },
+                {
+                  opacity:  0,
+                  ease:     'none',
+                  duration: ANIM.fadeOut,
+                  stagger:  { amount: ANIM.staggerOut, from: 'end' },
+                },
+                exit,
+              )
+            }
+          })
+
+          // Drive timeline from scroll progress through the wrapper
+          ScrollTrigger.create({
+            trigger:             wrapper,
+            start:               'top top',
+            end:                 'bottom bottom',
+            scrub:               1,
+            invalidateOnRefresh: true,
+            onUpdate:            (self) => tl.progress(self.progress),
+          })
+        }, section)
+
+        ScrollTrigger.refresh()
 
         return () => {
+          mobileCtx.revert()
+          // Move section back out of wrapper and remove wrapper
+          wrapper.parentElement?.insertBefore(section, wrapper)
+          wrapper.remove()
+          section.style.position = ''
+          section.style.top      = ''
+          video.loop  = false
           video.pause()
-          video.loop = false
-          cycle.kill()
         }
       })
     }
@@ -471,27 +503,62 @@ export default function Hero() {
           width uses CSS min() with 100vw to guarantee an exact pixel width
           at all times — no ambiguity from ancestor flex/grid contexts.
           ─────────────────────────────────────────────────────────────────── */}
-      {PARAGRAPHS.map((text, idx) => (
-        <div
-          key={idx}
-          ref={(el) => { textRefs.current[idx] = el }}
-          aria-hidden={idx !== 0}
-          className="hero-text"
-          style={{
-            ...TEXT_STYLE,
-            maxWidth:      'none',
-            position:      'absolute',
-            top:           '50%',
-            left:          '50%',
-            transform:     'translate(-50%, -50%)',
-            textAlign:     'center',
-            whiteSpace:    'normal',
-            pointerEvents: 'none',
-          }}
-        >
-          {text}
-        </div>
-      ))}
+      <div
+        ref={(el) => { textRefs.current[0] = el }}
+        aria-hidden={false}
+        className="hero-text"
+        style={{
+          ...TEXT_STYLE,
+          maxWidth:      'none',
+          position:      'absolute',
+          top:           '50%',
+          left:          '50%',
+          transform:     'translate(-50%, -50%)',
+          textAlign:     'center',
+          whiteSpace:    'normal',
+          pointerEvents: 'none',
+        }}
+      >
+        {PARA_1}
+      </div>
+
+      <div
+        ref={(el) => { textRefs.current[1] = el }}
+        aria-hidden={true}
+        className="hero-text"
+        style={{
+          ...TEXT_STYLE,
+          maxWidth:      'none',
+          position:      'absolute',
+          top:           '50%',
+          left:          '50%',
+          transform:     'translate(-50%, -50%)',
+          textAlign:     'center',
+          whiteSpace:    'normal',
+          pointerEvents: 'none',
+        }}
+      >
+        {PARA_2}
+      </div>
+
+      <div
+        ref={(el) => { textRefs.current[2] = el }}
+        aria-hidden={true}
+        className="hero-text"
+        style={{
+          ...TEXT_STYLE,
+          maxWidth:      'none',
+          position:      'absolute',
+          top:           '50%',
+          left:          '50%',
+          transform:     'translate(-50%, -50%)',
+          textAlign:     'center',
+          whiteSpace:    'normal',
+          pointerEvents: 'none',
+        }}
+      >
+        {PARA_3}
+      </div>
 
       {/* ── Scroll hint ──────────────────────────────────────────────────── */}
       <div

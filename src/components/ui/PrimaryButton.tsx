@@ -117,15 +117,12 @@ export default function PrimaryButton({
   const isMobile = () => window.matchMedia('(max-width: 809px)').matches
 
   useLayoutEffect(() => {
-    const arrowEl  = arrowRef.current
-    const parentEl = arrowEl?.parentElement
-    // Size the arrow as a perfect square: side = button height
-    if (arrowEl && parentEl) {
-      const h = parentEl.offsetHeight
-      if (h > 0) {
-        arrowEl.style.width  = `${h}px`
-        arrowEl.style.height = `${h}px`
-      }
+    const arrowEl = arrowRef.current
+    if (arrowEl) {
+      // flex stretch gives the arrow the button's full height — use it as the square side
+      const h = arrowEl.offsetHeight
+      if (h > 0) arrowEl.style.width = `${h}px`
+      if (isMobile()) arrowEl.style.marginLeft = '0.5rem'
     }
     const w = arrowEl?.offsetWidth ?? 42
     const alwaysExpanded = expanded || isMobile()
@@ -199,7 +196,7 @@ export default function PrimaryButton({
           zIndex:          1,
           display:         'flex',
           alignItems:      'center',
-          justifyContent:  'center',
+          justifyContent:  'flex-start',
           paddingLeft:     'calc(1rem + 3.5px)',
           paddingRight:    'calc(1rem + 3.5px)',
           paddingTop:      '0.25rem',
@@ -218,8 +215,10 @@ export default function PrimaryButton({
       {/* ── Arrow square — slides out from behind pill on hover ─────────── */}
       <div
         ref={arrowRef}
+        className="sixdx-arrow-square"
         style={{
           marginLeft:      '0.125rem',
+          aspectRatio:     '1 / 1',
           borderRadius:    '0.125rem',
           backgroundColor: arrowBg,
           transition:      'background-color 0.3s ease',

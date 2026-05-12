@@ -397,7 +397,9 @@ export default function Navbar() {
                 color:          '#ffffff',
                 textDecoration: 'none',
                 display:        'block',
-                padding:        '0.35rem 0',
+                padding:        '0.5rem 0',
+                borderTop:      i === 0 ? '1px solid rgba(255,255,255,0.22)' : 'none',
+                borderBottom:   '1px solid rgba(255,255,255,0.22)',
                 transition:     'opacity 0.2s ease',
               }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.45')}

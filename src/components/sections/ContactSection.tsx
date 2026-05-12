@@ -331,7 +331,7 @@ export default function ContactSection() {
           <PrimaryButton
             label="Get in touch"
             href="#"
-            variant="white"
+            variant="brand"
             onClick={() => submitRef.current?.click()}
           />
 
