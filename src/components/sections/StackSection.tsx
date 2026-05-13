@@ -299,7 +299,7 @@ export default function StackSection() {
               className="relative shrink-0 overflow-hidden bg-cover bg-center bg-no-repeat"
               style={{
                 width:           `calc(var(--stack-progress) * 100vw)`,
-                height:          '100svh',
+                height:          '100vh',
                 backgroundImage: `url("${STACK_IMAGE}")`,
               }}
             >
