@@ -127,9 +127,12 @@ html.lenis, html.lenis body {
 }
 
 /* ── Hero Section (mobile sticky scroll) ───────────────────────────────── */
+/* svh = small viewport (URL bar visible) — sets scroll distance.
+   dvh fallback ensures the wrapper never shrinks below the dynamic viewport. */
 @media (max-width: 1199px) {
   .hero-scroll-wrapper {
     height: 400svh;
+    min-height: 400dvh;
   }
 }
 

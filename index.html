@@ -3,8 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- viewport-fit=cover: edge-to-edge on notch/rounded-corner devices -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- theme-color: keeps the Android status bar dark so it blends with the hero -->
+    <meta name="theme-color" content="#0a0a0a" />
     <title>SixDX</title>
+    <!-- Inline dark background — prevents the white FOUC flash before CSS loads.
+         Without this, the default white body shows through the 20%-opaque hero overlay
+         on real mobile devices during the initial paint. -->
+    <style>html,body{background:#0a0a0a;margin:0;padding:0;}</style>
     <!-- Preload display font to prevent FOUT on hero headline -->
     <link rel="preload" href="/fonts/Marund.ttf" as="font" type="font/truetype" crossorigin="anonymous" />
     <link rel="preload" href="/fonts/HelveticaNeue.ttc" as="font" type="font/truetype" crossorigin="anonymous" />

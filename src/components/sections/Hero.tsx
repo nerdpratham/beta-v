@@ -455,7 +455,7 @@ export default function Hero() {
       ref={sectionRef}
       aria-label="Hero"
       className="relative w-full overflow-hidden"
-      style={{ height: '100svh' }}
+      style={{ height: '100svh', minHeight: '100dvh' }}
     >
       {/* Responsive text tokens — injected once, applies to all .hero-text divs */}
       <style>{HERO_RESPONSIVE_CSS}</style>
