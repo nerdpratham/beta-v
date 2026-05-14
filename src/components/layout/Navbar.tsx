@@ -380,7 +380,7 @@ export default function Navbar() {
             flexDirection:  'column',
             justifyContent: 'center',
             padding:        '2rem 1.75rem',
-            gap:            '0.25rem',
+            gap:            '8px',
           }}
         >
           {NAV_ITEMS.map((item, i) => (

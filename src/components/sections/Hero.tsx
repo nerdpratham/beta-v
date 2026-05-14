@@ -1,4 +1,4 @@
-// ─── HERO SECTION — SixDX ────────────────────────────────────────────────────
+/// ─── HERO SECTION — SixDX ────────────────────────────────────────────────────
 // Full-screen video hero. Video currentTime is driven by GSAP ScrollTrigger
 // scrub — scroll down = video plays frame-by-frame (Apple-style).
 //
@@ -10,7 +10,8 @@
 
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '../../animations/gsap.config'
-import heroVideo from '../../assets/video/cosmos-scrub.mp4'
+// import heroVideo from '../../assets/video/cosmos-scrub.mp4'
+const heroVideo = '/video/ABB_cut_mid.mp4'
 import { fonts, colors } from '../../styles/tokens'
 
 // ─── RESPONSIVE TEXT TOKENS (Figma-exact) ────────────────────────────────────
@@ -51,11 +52,11 @@ const PARA_3 = 'This is not automation replacing expertise. This is expertise, f
 // they can be overridden per-breakpoint. Only non-responsive values live here.
 const TEXT_STYLE: React.CSSProperties = {
   fontFamily: fonts.marund,
-  fontStyle:  'normal',
+  fontStyle: 'normal',
   fontWeight: 'normal',
-  color:      colors.white,
+  color: colors.white,
   // Max-width caps line length on desktop. Narrower screens use calc() below.
-  maxWidth:   '69rem',
+  maxWidth: '69rem',
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -71,25 +72,25 @@ const ANIM = {
   // ── Character opacity fade timings (fraction of the 0→1 scrub timeline) ──
   // fadeIn / fadeOut: how long the opacity sweep takes for each char
   // staggerIn / staggerOut: total time spread across all chars (left→right)
-  fadeIn:     0.10,
-  fadeOut:    0.08,
-  staggerIn:  0.07,   // enter stagger: last char starts 0.07 after first
+  fadeIn: 0.10,
+  fadeOut: 0.08,
+  staggerIn: 0.07,   // enter stagger: last char starts 0.07 after first
   staggerOut: 0.04,   // exit stagger: last char starts 0.04 after first
 
   // ── Per-paragraph timing slots ───────────────────────────────────────────
   // enterAt: position (0–1) where chars start fading IN  (-1 = no enter)
   // exitAt:  position (0–1) where chars start fading OUT (-1 = no exit / stays visible)
   slots: [
-    { enter: -1,   exit: 0.20 },   // Para 0: visible from page load, only exits
+    { enter: -1, exit: 0.20 },   // Para 0: visible from page load, only exits
     { enter: 0.32, exit: 0.55 },   // Para 1: fades in, then out
-    { enter: 0.68, exit: -1   },   // Para 2: fades in, stays visible to end
+    { enter: 0.68, exit: -1 },   // Para 2: fades in, stays visible to end
   ],
 
   // ── Page-load mount animation for paragraph 0 ────────────────────────────
   mountDuration: 0.5,    // opacity sweep duration per char
-  mountStagger:  0.5,    // total stagger spread across all chars (seconds)
-  mountDelay:    0.4,    // delay before first char starts
-  mountEase:     'power2.out',
+  mountStagger: 0.5,    // total stagger spread across all chars (seconds)
+  mountDelay: 0.4,    // delay before first char starts
+  mountEase: 'power2.out',
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -152,32 +153,32 @@ function splitTextToChars(element: HTMLElement): HTMLElement[] {
 export default function Hero() {
   const sectionRef = useRef<HTMLElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const videoRef   = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const textRefs   = useRef<(HTMLDivElement | null)[]>([])
+  const textRefs = useRef<(HTMLDivElement | null)[]>([])
 
   const state = useRef<{
-    allChars:      HTMLElement[][]
-    mountCtx:      gsap.Context | null
-    scrollCtx:     gsap.Context | null
-    mountTween:    gsap.core.Tween | null
-    resizeTimer:   number
-    videoUrl:      string | null
+    allChars: HTMLElement[][]
+    mountCtx: gsap.Context | null
+    scrollCtx: gsap.Context | null
+    mountTween: gsap.core.Tween | null
+    resizeTimer: number
+    videoUrl: string | null
     // gsap.matchMedia() instance — killed on unmount
-    mediaMatcher:  { kill: () => void } | null
+    mediaMatcher: { kill: () => void } | null
   }>({
-    allChars:      [],
-    mountCtx:      null,
-    scrollCtx:     null,
-    mountTween:    null,
-    resizeTimer:   0,
-    videoUrl:      null,
-    mediaMatcher:  null,
+    allChars: [],
+    mountCtx: null,
+    scrollCtx: null,
+    mountTween: null,
+    resizeTimer: 0,
+    videoUrl: null,
+    mediaMatcher: null,
   })
 
   useEffect(() => {
     const section = sectionRef.current
-    const video   = videoRef.current
+    const video = videoRef.current
     if (!section || !video) return
 
     const s = state.current
@@ -206,10 +207,10 @@ export default function Hero() {
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: section,
-            start:   'top top',
-            end:     ANIM.pinDuration,
-            pin:     true,
-            scrub:   ANIM.scrub,
+            start: 'top top',
+            end: ANIM.pinDuration,
+            pin: true,
+            scrub: ANIM.scrub,
             refreshPriority: 2,
             invalidateOnRefresh: true,
             fastScrollEnd: false,
@@ -236,10 +237,10 @@ export default function Hero() {
               chars,
               { opacity: 0 },
               {
-                opacity:  1,
-                ease:     'none',
+                opacity: 1,
+                ease: 'none',
                 duration: ANIM.fadeIn,
-                stagger:  { amount: ANIM.staggerIn, from: 'start' },
+                stagger: { amount: ANIM.staggerIn, from: 'start' },
               },
               enter,
             )
@@ -251,10 +252,10 @@ export default function Hero() {
               chars,
               { opacity: 1 },
               {
-                opacity:  0,
-                ease:     'none',
+                opacity: 0,
+                ease: 'none',
                 duration: ANIM.fadeOut,
-                stagger:  { amount: ANIM.staggerOut, from: 'end' },
+                stagger: { amount: ANIM.staggerOut, from: 'end' },
               },
               exit,
             )
@@ -280,7 +281,7 @@ export default function Hero() {
         // Blob-fetch video for frame-accurate scrubbing
         video.pause()
         video.preload = 'auto'
-        video.loop    = false
+        video.loop = false
 
         const loadVideo = async () => {
           try {
@@ -302,11 +303,11 @@ export default function Hero() {
           // Para 0 fades in on page load
           if (s.allChars[0]?.length) {
             s.mountTween = gsap.to(s.allChars[0], {
-              opacity:  1,
-              ease:     ANIM.mountEase,
+              opacity: 1,
+              ease: ANIM.mountEase,
               duration: ANIM.mountDuration,
-              stagger:  { amount: ANIM.mountStagger, from: 'start' },
-              delay:    ANIM.mountDelay,
+              stagger: { amount: ANIM.mountStagger, from: 'start' },
+              delay: ANIM.mountDelay,
             })
           }
         }, section)
@@ -343,16 +344,16 @@ export default function Hero() {
         // Make section sticky inside the JSX wrapper (hero-scroll-wrapper).
         // The wrapper's height is set to 400svh by CSS, giving scroll distance.
         section.style.position = 'sticky'
-        section.style.top      = '0px'
+        section.style.top = '0px'
 
         // ── Paused timeline — driven by scroll progress ──────────────────────
         const mobileCtx = gsap.context(() => {
           const tl = gsap.timeline({ paused: true })
 
           const mobileSlots = [
-            { enter: -1,   exit: 0.25 },
+            { enter: -1, exit: 0.25 },
             { enter: 0.35, exit: 0.65 },
-            { enter: 0.75, exit: -1   },
+            { enter: 0.75, exit: -1 },
           ]
 
           mobileSlots.forEach(({ enter, exit }, i) => {
@@ -364,10 +365,10 @@ export default function Hero() {
                 chars,
                 { opacity: 0 },
                 {
-                  opacity:  1,
-                  ease:     'none',
+                  opacity: 1,
+                  ease: 'none',
                   duration: ANIM.fadeIn,
-                  stagger:  { amount: ANIM.staggerIn, from: 'start' },
+                  stagger: { amount: ANIM.staggerIn, from: 'start' },
                 },
                 enter,
               )
@@ -378,10 +379,10 @@ export default function Hero() {
                 chars,
                 { opacity: 1 },
                 {
-                  opacity:  0,
-                  ease:     'none',
+                  opacity: 0,
+                  ease: 'none',
                   duration: ANIM.fadeOut,
-                  stagger:  { amount: ANIM.staggerOut, from: 'end' },
+                  stagger: { amount: ANIM.staggerOut, from: 'end' },
                 },
                 exit,
               )
@@ -390,12 +391,12 @@ export default function Hero() {
 
           // Drive timeline from scroll progress through the JSX wrapper div
           ScrollTrigger.create({
-            trigger:             wrapperRef.current,
-            start:               'top top',
-            end:                 'bottom bottom',
-            scrub:               1,
+            trigger: wrapperRef.current,
+            start: 'top top',
+            end: 'bottom bottom',
+            scrub: 1,
             invalidateOnRefresh: true,
-            onUpdate:            (self) => tl.progress(self.progress),
+            onUpdate: (self) => tl.progress(self.progress),
           })
         }, section)
 
@@ -404,8 +405,8 @@ export default function Hero() {
         return () => {
           mobileCtx.revert()
           section.style.position = ''
-          section.style.top      = ''
-          video.loop  = false
+          section.style.top = ''
+          video.loop = false
           video.pause()
         }
       })
@@ -451,45 +452,45 @@ export default function Hero() {
 
   return (
     <div ref={wrapperRef} className="hero-scroll-wrapper">
-    <section
-      ref={sectionRef}
-      aria-label="Hero"
-      className="relative w-full overflow-hidden"
-      style={{ height: '100svh', minHeight: '100dvh' }}
-    >
-      {/* Responsive text tokens — injected once, applies to all .hero-text divs */}
-      <style>{HERO_RESPONSIVE_CSS}</style>
-      {/* ── Background video — currentTime scrubbed by scroll ────────────── */}
-      <video
-        ref={videoRef}
-        src={heroVideo}
-        className="absolute inset-0 w-full h-full object-cover"
-        playsInline
-        muted
-        preload="auto"
-        aria-hidden="true"
-        autoPlay={false}
-      />
+      <section
+        ref={sectionRef}
+        aria-label="Hero"
+        className="relative w-full overflow-hidden"
+        style={{ height: '100svh', minHeight: '100dvh' }}
+      >
+        {/* Responsive text tokens — injected once, applies to all .hero-text divs */}
+        <style>{HERO_RESPONSIVE_CSS}</style>
+        {/* ── Background video — currentTime scrubbed by scroll ────────────── */}
+        <video
+          ref={videoRef}
+          src={heroVideo}
+          className="absolute inset-0 w-full h-full object-cover"
+          playsInline
+          muted
+          preload="auto"
+          aria-hidden="true"
+          autoPlay={false}
+        />
 
-      {/* ── Dark overlay — starts at 20%, darkens to 55% as video progresses */}
-      <div
-        ref={overlayRef}
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'rgba(0,0,0,1)', opacity: 0.20 }}
-      />
+        {/* ── Dark overlay — starts at 20%, darkens to 55% as video progresses */}
+        <div
+          ref={overlayRef}
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'rgba(0,0,0,1)', opacity: 0.45 }}
+        />
 
-      {/* ── Radial vignette — keeps text readable at all video frames ──────── */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.50) 100%)',
-        }}
-      />
+        {/* ── Radial vignette — keeps text readable at all video frames ──────── */}
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.50) 100%)',
+          }}
+        />
 
-      {/* ── Text paragraphs ──────────────────────────────────────────────────
+        {/* ── Text paragraphs ──────────────────────────────────────────────────
           All three paragraphs are stacked at the same position.
           Visibility is controlled purely by character opacity — whichever
           paragraph is "active" has its chars at opacity 1, others at 0.
@@ -497,77 +498,77 @@ export default function Hero() {
           width uses CSS min() with 100vw to guarantee an exact pixel width
           at all times — no ambiguity from ancestor flex/grid contexts.
           ─────────────────────────────────────────────────────────────────── */}
-      <div
-        ref={(el) => { textRefs.current[0] = el }}
-        aria-hidden={false}
-        className="hero-text"
-        style={{
-          ...TEXT_STYLE,
-          maxWidth:      'none',
-          position:      'absolute',
-          top:           '50%',
-          left:          '50%',
-          transform:     'translate(-50%, -50%)',
-          textAlign:     'center',
-          whiteSpace:    'normal',
-          pointerEvents: 'none',
-        }}
-      >
-        {PARA_1}
-      </div>
-
-      <div
-        ref={(el) => { textRefs.current[1] = el }}
-        aria-hidden={true}
-        className="hero-text"
-        style={{
-          ...TEXT_STYLE,
-          maxWidth:      'none',
-          position:      'absolute',
-          top:           '50%',
-          left:          '50%',
-          transform:     'translate(-50%, -50%)',
-          textAlign:     'center',
-          whiteSpace:    'normal',
-          pointerEvents: 'none',
-        }}
-      >
-        {PARA_2}
-      </div>
-
-      <div
-        ref={(el) => { textRefs.current[2] = el }}
-        aria-hidden={true}
-        className="hero-text"
-        style={{
-          ...TEXT_STYLE,
-          maxWidth:      'none',
-          position:      'absolute',
-          top:           '50%',
-          left:          '50%',
-          transform:     'translate(-50%, -50%)',
-          textAlign:     'center',
-          whiteSpace:    'normal',
-          pointerEvents: 'none',
-        }}
-      >
-        {PARA_3}
-      </div>
-
-      {/* ── Scroll hint ──────────────────────────────────────────────────── */}
-      <div
-        aria-hidden="true"
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60"
-      >
-        <span
-          className="text-white text-[11px] uppercase tracking-[0.2em]"
-          style={{ fontFamily: fonts.hn }}
+        <div
+          ref={(el) => { textRefs.current[0] = el }}
+          aria-hidden={false}
+          className="hero-text"
+          style={{
+            ...TEXT_STYLE,
+            maxWidth: 'none',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center',
+            whiteSpace: 'normal',
+            pointerEvents: 'none',
+          }}
         >
-          Scroll
-        </span>
-        <div className="w-px h-10 bg-white/60 animate-pulse" />
-      </div>
-    </section>
+          {PARA_1}
+        </div>
+
+        <div
+          ref={(el) => { textRefs.current[1] = el }}
+          aria-hidden={true}
+          className="hero-text"
+          style={{
+            ...TEXT_STYLE,
+            maxWidth: 'none',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center',
+            whiteSpace: 'normal',
+            pointerEvents: 'none',
+          }}
+        >
+          {PARA_2}
+        </div>
+
+        <div
+          ref={(el) => { textRefs.current[2] = el }}
+          aria-hidden={true}
+          className="hero-text"
+          style={{
+            ...TEXT_STYLE,
+            maxWidth: 'none',
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            textAlign: 'center',
+            whiteSpace: 'normal',
+            pointerEvents: 'none',
+          }}
+        >
+          {PARA_3}
+        </div>
+
+        {/* ── Scroll hint ──────────────────────────────────────────────────── */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60"
+        >
+          <span
+            className="text-white text-[11px] uppercase tracking-[0.2em]"
+            style={{ fontFamily: fonts.hn }}
+          >
+            Scroll
+          </span>
+          <div className="w-px h-10 bg-white/60 animate-pulse" />
+        </div>
+      </section>
     </div>
   )
 }
