@@ -2,14 +2,13 @@
 // Figma node: 323:118  /  "Work"
 //
 // To add / remove / edit projects — change the PROJECTS array only.
-// To change card appearance — pass props to <WorkCard> or edit WorkCard.tsx.
-//
-// TODO: replace Figma CDN image URLs with /public/images/work-*.webp before launch.
+// Cards use VideoDistortionCard: video paused at first frame, wave-distortion
+// reveal + mouse ripple on hover.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import type { CSSProperties } from 'react'
-import WorkCard from '../ui/WorkCard'
-import type { WorkCardProps } from '../ui/WorkCard'
+import VideoDistortionCard from '../ui/VideoDistortionCard'
+import type { VideoDistortionCardProps } from '../ui/VideoDistortionCard'
 import { colors, textStyles } from '../../styles/tokens'
 
 // ── Content ───────────────────────────────────────────────────────────────────
@@ -17,24 +16,18 @@ import { colors, textStyles } from '../../styles/tokens'
 const HEADING  = 'The Work'
 const SUBTITLE = 'Three environments. Three industries. Each built from client site documentation.'
 
-// Figma asset URLs — valid ~7 days. Swap for local paths before go-live.
-const IMG_1 = 'https://www.figma.com/api/mcp/asset/19c3d883-e7a4-4766-9070-5d954f341dd8'
-const IMG_2 = 'https://www.figma.com/api/mcp/asset/84817b4a-a983-467c-9bb0-113cb789f591'
-const IMG_3 = 'https://www.figma.com/api/mcp/asset/ef33cbb5-746b-46b6-8b80-b2ffad200306'
+const VIDEO = '/video/cosmos.mp4'
 
-// Each row is an array of WorkCardProps. Add/remove rows or cards freely.
-const HOVER_VIDEO = '/video/cosmos.mp4'
-
-const PROJECTS: WorkCardProps[][] = [
+const PROJECTS: VideoDistortionCardProps[][] = [
   [
-    { image: IMG_1, title: 'Integrated Mill Furnace Floor', tag: 'Steel',     hoverVideo: HOVER_VIDEO },
-    { image: IMG_2, title: 'Shutdown Procedure',            tag: 'Oil & Gas', hoverVideo: HOVER_VIDEO },
-    { image: IMG_3, title: 'Hall Isolation',                tag: 'Oil & Gas', hoverVideo: HOVER_VIDEO },
+    { videoSrc: VIDEO, title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: VIDEO, title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: VIDEO, title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
   [
-    { image: IMG_1, title: 'Integrated Mill Furnace Floor', tag: 'Steel',     hoverVideo: HOVER_VIDEO },
-    { image: IMG_2, title: 'Shutdown Procedure',            tag: 'Oil & Gas', hoverVideo: HOVER_VIDEO },
-    { image: IMG_3, title: 'Hall Isolation',                tag: 'Oil & Gas', hoverVideo: HOVER_VIDEO },
+    { videoSrc: VIDEO, title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: VIDEO, title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: VIDEO, title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
 ]
 
@@ -66,8 +59,8 @@ const s = {
 
   subtitle: {
     ...textStyles.h3,
-    color:     colors.ink,
-    width:     443,
+    color:      colors.ink,
+    width:      443,
     flexShrink: 0,
   } satisfies CSSProperties,
 
@@ -85,7 +78,6 @@ const s = {
   } satisfies CSSProperties,
 }
 
-
 // ── Section ───────────────────────────────────────────────────────────────────
 
 export default function WorkSection() {
@@ -101,7 +93,7 @@ export default function WorkSection() {
         {PROJECTS.map((row, ri) => (
           <div key={ri} className="work-row" style={s.row}>
             {row.map((cardProps, ci) => (
-              <WorkCard key={`${ri}-${ci}`} {...cardProps} />
+              <VideoDistortionCard key={`${ri}-${ci}`} {...cardProps} />
             ))}
           </div>
         ))}

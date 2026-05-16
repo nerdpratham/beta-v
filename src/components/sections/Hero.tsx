@@ -20,9 +20,41 @@ import { fonts, colors } from '../../styles/tokens'
 const HERO_RESPONSIVE_CSS = `
   .hero-text {
     width:          min(69rem, calc(100vw - 3.5rem));
+    font-family:    var(--font-display);
     font-size:      clamp(2rem, 4.2vw, 3.75rem);
     letter-spacing: -0.04em;
     line-height:    1.05;
+  }
+  .hero-scroll-shimmer {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    color: rgba(255,255,255,0.45);
+  }
+  .hero-scroll-shimmer::after {
+    content: attr(data-label);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0) 0%,
+      rgba(255,255,255,0) 35%,
+      rgba(255,255,255,1) 50%,
+      rgba(255,255,255,0) 65%,
+      rgba(255,255,255,0) 100%
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: hero-scroll-shimmer 4.4s linear infinite;
+  }
+  @keyframes hero-scroll-shimmer {
+    from { background-position: 150% 0; }
+    to   { background-position: -150% 0; }
   }
   @media (max-width: 1199px) and (min-width: 810px) {
     .hero-text {
@@ -51,7 +83,7 @@ const PARA_3 = 'This is not automation replacing expertise. This is expertise, f
 // fontSize / letterSpacing / lineHeight are set via HERO_RESPONSIVE_CSS so
 // they can be overridden per-breakpoint. Only non-responsive values live here.
 const TEXT_STYLE: React.CSSProperties = {
-  fontFamily: fonts.marund,
+  fontFamily: 'var(--font-display)',
   fontStyle: 'normal',
   fontWeight: 'normal',
   color: colors.white,
@@ -561,12 +593,12 @@ export default function Hero() {
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60"
         >
           <span
-            className="text-white text-[11px] uppercase tracking-[0.2em]"
+            className="hero-scroll-shimmer text-[14px] tracking-[0em]"
+            data-label="Scroll"
             style={{ fontFamily: fonts.hn }}
           >
             Scroll
           </span>
-          <div className="w-px h-10 bg-white/60 animate-pulse" />
         </div>
       </section>
     </div>
