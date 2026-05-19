@@ -16,7 +16,7 @@
 
 import { useRef, useState, type FormEvent, type ChangeEvent } from 'react'
 import { fonts, colors, textStyles } from '../../styles/tokens'
-import PrimaryButton from '../ui/PrimaryButton'
+import ClarteButton from '../ui/ClarteButton'
 
 // ── Video ─────────────────────────────────────────────────────────────────────
 // To swap: change the filename here. Video must be in /public/video/
@@ -41,31 +41,31 @@ const FOOTER_GRADIENT = `linear-gradient(
 const TAGLINE = 'Photorealistic. Technically accurate. Built for the environments where precision matters.'
 
 const NAV_PILLS = [
-  { label: 'Differentiators',   href: '#' },
-  { label: 'How SixDX Works',   href: '#' },
-  { label: 'Work',              href: '#' },
-  { label: 'Testimonials',      href: '#' },
+  { label: 'Differentiators', href: '#' },
+  { label: 'How SixDX Works', href: '#' },
+  { label: 'Work', href: '#' },
+  { label: 'Testimonials', href: '#' },
 ]
 
 const OFFICES = [
   {
-    region : 'India',
+    region: 'India',
     company: 'Six D Engineering Solutions Pvt Ltd',
     address: 'A-167, Ground Floor, Sector - 63, Noida, Uttar Pradesh, 201 301, India',
-    email  : 'info@sixdengineering.com',
-    phone  : '+91 84481 79046',
+    email: 'info@sixdengineering.com',
+    phone: '+91 84481 79046',
   },
   {
-    region : 'UAE',
+    region: 'UAE',
     company: 'Six D Engineering Solutions FZC',
     address: 'B 49-130, Sharjah Research Technology & Innovation Park (SRTIP), Sharjah, United Arab Emirates',
-    email  : 'info@sixdengineering.com',
-    phone  : '+971 58 522 9400, +971 58556 6837',
+    email: 'info@sixdengineering.com',
+    phone: '+971 58 522 9400, +971 58556 6837',
   },
 ]
 
 const POLICY_LINKS = [
-  { label: 'Privacy Policy',     href: '#' },
+  { label: 'Privacy Policy', href: '#' },
   { label: 'Terms & Conditions', href: '#' },
 ]
 
@@ -80,10 +80,10 @@ interface NewsletterState {
 }
 
 function NewsletterCard() {
-  const [open, setOpen]     = useState(false)
-  const [form, setForm]     = useState<NewsletterState>({ email: '' })
+  const [open, setOpen] = useState(false)
+  const [form, setForm] = useState<NewsletterState>({ email: '' })
   const [submitted, setSubmitted] = useState(false)
-  const videoRef            = useRef<HTMLVideoElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   const handleOpen = () => {
     setOpen(true)
@@ -111,13 +111,13 @@ function NewsletterCard() {
       onClick={!open ? handleOpen : undefined}
       className="footer-newsletter-card w-full md:w-[329px]"
       style={{
-        height       : 186,
-        flexShrink   : 0,
-        borderRadius : 12,
-        overflow     : 'hidden',
-        position     : 'relative',
-        cursor       : open ? 'default' : 'pointer',
-        background   : colors.white,
+        height: 186,
+        flexShrink: 0,
+        borderRadius: 12,
+        overflow: 'hidden',
+        position: 'relative',
+        cursor: open ? 'default' : 'pointer',
+        background: colors.white,
       }}
     >
       {/* ── Video layer ─────────────────────────────────────────────────────
@@ -132,13 +132,13 @@ function NewsletterCard() {
         playsInline
         aria-hidden="true"
         style={{
-          position  : 'absolute',
-          inset     : 0,
-          width     : '100%',
-          height    : '100%',
-          objectFit : 'cover',
+          position: 'absolute',
+          inset: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
           transition: 'opacity 0.4s ease',
-          opacity   : open ? 0 : 1,
+          opacity: open ? 0 : 1,
         }}
       />
 
@@ -146,29 +146,29 @@ function NewsletterCard() {
       <div
         aria-hidden={open}
         style={{
-          position  : 'absolute',
-          inset     : 0,
-          padding   : 12,
-          display   : 'flex',
+          position: 'absolute',
+          inset: 0,
+          padding: 12,
+          display: 'flex',
           flexDirection: 'column',
           justifyContent: 'flex-end',
           // Gradient so text stays readable over any video frame
           background: 'linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%)',
           transition: 'opacity 0.3s ease',
-          opacity   : open ? 0 : 1,
+          opacity: open ? 0 : 1,
           pointerEvents: 'none',
         }}
       >
         <p style={{
           ...textStyles.h4,
-          color     : colors.white,
+          color: colors.white,
           lineHeight: 1.2,
         }}>
           Sign Up to Our<br />Newsletter
         </p>
         <p style={{
           ...textStyles.label,
-          color    : colors.white70,
+          color: colors.white70,
           marginTop: 4,
         }}>
           Tap to subscribe →
@@ -178,16 +178,16 @@ function NewsletterCard() {
       {/* ── Signup form (slides in on click) ────────────────────────────── */}
       <div
         style={{
-          position  : 'absolute',
-          inset     : 0,
-          padding   : 16,
+          position: 'absolute',
+          inset: 0,
+          padding: 16,
           background: colors.white,
-          display   : 'flex',
+          display: 'flex',
           flexDirection: 'column',
           justifyContent: 'center',
           transition: 'opacity 0.35s ease, transform 0.35s ease',
-          opacity   : open ? 1 : 0,
-          transform : open ? 'translateY(0)' : 'translateY(12px)',
+          opacity: open ? 1 : 0,
+          transform: open ? 'translateY(0)' : 'translateY(12px)',
           pointerEvents: open ? 'auto' : 'none',
         }}
       >
@@ -196,16 +196,16 @@ function NewsletterCard() {
           onClick={handleClose}
           aria-label="Close newsletter form"
           style={{
-            position  : 'absolute',
-            top       : 10,
-            right     : 12,
+            position: 'absolute',
+            top: 10,
+            right: 12,
             background: 'none',
-            border    : 'none',
-            cursor    : 'pointer',
-            padding   : 4,
-            color     : colors.ink,
+            border: 'none',
+            cursor: 'pointer',
+            padding: 4,
+            color: colors.ink,
             lineHeight: 1,
-            fontSize  : 18,
+            fontSize: 18,
           }}
         >
           ✕
@@ -226,8 +226,8 @@ function NewsletterCard() {
           <>
             <p style={{
               ...textStyles.h4,
-              color       : colors.ink,
-              lineHeight  : 1.2,
+              color: colors.ink,
+              lineHeight: 1.2,
               marginBottom: 12,
             }}>
               Sign Up to Our<br />Newsletter
@@ -241,27 +241,27 @@ function NewsletterCard() {
                 placeholder="your@email.com"
                 style={{
                   ...textStyles.body,
-                  width        : '100%',
-                  padding      : '8px 10px',
-                  border       : `1px solid ${colors.ink10}`,
-                  borderRadius : 4,
-                  background   : colors.ink05,
-                  color        : colors.ink,
-                  outline      : 'none',
-                  boxSizing    : 'border-box',
+                  width: '100%',
+                  padding: '8px 10px',
+                  border: `1px solid ${colors.ink10}`,
+                  borderRadius: 4,
+                  background: colors.ink05,
+                  color: colors.ink,
+                  outline: 'none',
+                  boxSizing: 'border-box',
                 }}
               />
               <button
                 type="submit"
                 style={{
                   ...textStyles.bodyMedium,
-                  width       : '100%',
-                  padding     : '8px 0',
-                  background  : colors.brand1,
-                  color       : colors.white,
-                  border      : 'none',
+                  width: '100%',
+                  padding: '8px 0',
+                  background: colors.brand1,
+                  color: colors.white,
+                  border: 'none',
                   borderRadius: 4,
-                  cursor      : 'pointer',
+                  cursor: 'pointer',
                 }}
               >
                 Subscribe
@@ -287,11 +287,11 @@ export default function FooterSection() {
       aria-label="Footer"
       data-theme="light"
       style={{
-        display      : 'flex',
+        display: 'flex',
         flexDirection: 'column',
-        width        : '100%',
-        position     : 'relative',
-        boxSizing    : 'border-box',
+        width: '100%',
+        position: 'relative',
+        boxSizing: 'border-box',
       }}
     >
 
@@ -302,8 +302,13 @@ export default function FooterSection() {
                   + Main Container (offices + newsletter)
           Padding matches original footer: 100px top, 28px sides, 60px bottom.
       ══════════════════════════════════════════════════════════════════════ */}
-      <div className="footer-gradient-block px-3 pt-10 pb-[60px] md:px-7 md:pt-[100px] md:pb-[60px] flex flex-col gap-10 md:gap-[200px] w-full box-border" style={{
-        background   : FOOTER_GRADIENT,
+      <div className="footer-gradient-block flex flex-col gap-10 md:gap-[200px] w-full" style={{
+        background: FOOTER_GRADIENT,
+        paddingTop: 100,
+        paddingRight: 28,
+        paddingBottom: 14,
+        paddingLeft: 28,
+        boxSizing: 'border-box',
       }}>
 
         {/* ── CTA_CONTAINER — Figma 408:247 ────────────────────────────────── */}
@@ -311,14 +316,23 @@ export default function FooterSection() {
 
           {/* CTA block: tagline + button */}
           <div className="flex flex-col gap-8">
-            <h2 className="max-w-[52rem]" style={{
-              ...textStyles.h1,
+            <h2 className="footer-tagline" style={{
+              fontFamily: fonts.hn,
+              fontSize: 56,
+              fontWeight: 400,
+              lineHeight: 0.88,
+              letterSpacing: '-0.03em',
               color: colors.ink,
+              width: 878,
+              maxWidth: '100%',
+              margin: 0,
             }}>
               {TAGLINE}
             </h2>
-            
-            <PrimaryButton label="Get in touch" href="#contact" variant="brand" />
+
+            <div>
+              <ClarteButton label="Get in touch" href="#contact" className="clarte-button--nav" />
+            </div>
           </div>
 
           {/* Menu Container — nav pills */}
@@ -384,7 +398,7 @@ export default function FooterSection() {
           reads as a seamless continuation of the footer palette.
       ══════════════════════════════════════════════════════════════════════ */}
       <div className="footer-bottom-bar flex flex-col md:flex-row justify-between items-center gap-4 md:gap-2 px-3 pb-3 md:px-7 md:pb-[14px] w-full box-border" style={{
-        background    : '#1c0b05',
+        background: '#1c0b05',
       }}>
 
         <div style={{ display: 'flex', gap: 24 }}>
@@ -393,12 +407,12 @@ export default function FooterSection() {
               key={link.label}
               href={link.href}
               style={{
-                fontFamily    : fonts.hn,
-                fontSize      : '0.625rem',
-                letterSpacing : '0em',
-                lineHeight    : 1.4,
-                fontWeight    : 'normal',
-                color         : 'rgba(255,255,255,0.5)',
+                fontFamily: fonts.hn,
+                fontSize: '0.625rem',
+                letterSpacing: '0em',
+                lineHeight: 1.4,
+                fontWeight: 'normal',
+                color: 'rgba(255,255,255,0.5)',
                 textDecoration: 'none',
               }}
             >
@@ -408,13 +422,13 @@ export default function FooterSection() {
         </div>
 
         <p style={{
-          fontFamily   : fonts.hn,
-          fontSize     : '0.625rem',
+          fontFamily: fonts.hn,
+          fontSize: '0.625rem',
           letterSpacing: '0em',
-          lineHeight   : 1.4,
-          fontWeight   : 'normal',
-          color        : 'rgba(28,11,5,0.50)',
-          margin       : 0,
+          lineHeight: 1.4,
+          fontWeight: 'normal',
+          color: 'rgba(28,11,5,0.50)',
+          margin: 0,
         }}>
           {COPYRIGHT}
         </p>

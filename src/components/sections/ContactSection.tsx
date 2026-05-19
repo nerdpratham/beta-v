@@ -6,7 +6,7 @@
 
 import { useRef, useState, type CSSProperties, type FormEvent, type ChangeEvent } from 'react'
 import { colors, textStyles } from '../../styles/tokens'
-import PrimaryButton from '../ui/PrimaryButton'
+import ClarteButton from '../ui/ClarteButton'
 
 // ── Background image ──────────────────────────────────────────────────────────
 // Swap the filename here to change the contact section image.
@@ -328,10 +328,9 @@ export default function ContactSection() {
           <button ref={submitRef} type="submit" style={{ display: 'none' }} aria-hidden="true" />
 
           {/* Shared PrimaryButton — same component as Navbar CTA */}
-          <PrimaryButton
+          <ClarteButton
             label="Get in touch"
             href="#"
-            variant="brand"
             onClick={() => submitRef.current?.click()}
           />
 

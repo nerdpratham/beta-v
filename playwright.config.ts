@@ -19,7 +19,13 @@ export default defineConfig({
       name: 'mobile-chrome',
       use: {
         ...devices['Pixel 5'],
-        // Chromium headless shell
+        channel: undefined,
+      },
+    },
+    {
+      name: 'desktop-chrome',
+      use: {
+        viewport: { width: 1440, height: 900 },
         channel: undefined,
       },
     },

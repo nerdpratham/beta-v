@@ -13,15 +13,15 @@
 
 import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from '../../animations/gsap.config'
-import PrimaryButton from '../ui/PrimaryButton'
+import ClarteButton from '../ui/ClarteButton'
 import { fonts, textStyles } from '../../styles/tokens'
 
 // ─── CONTENT — edit freely ────────────────────────────────────────────────────
 const NAV_ITEMS = [
   { label: 'Differentiators', href: '#differentiators' },
   { label: 'How SixDX Works', href: '#how-it-works' },
-  { label: 'Work',            href: '#work' },
-  { label: 'Testimonials',    href: '#testimonials' },
+  { label: 'Work', href: '#work' },
+  { label: 'Testimonials', href: '#testimonials' },
 ] as const
 
 const CTA = { label: 'Get in touch', href: '#contact' }
@@ -29,21 +29,21 @@ const CTA = { label: 'Get in touch', href: '#contact' }
 
 const GLASS_ITEM: React.CSSProperties = {
   ...textStyles.bodyMedium,
-  backgroundColor:      'var(--nav-bg, rgba(0,0,0,0.16))',
-  backdropFilter:       'blur(2rem)',
+  backgroundColor: 'var(--nav-bg, rgba(0,0,0,0.16))',
+  backdropFilter: 'blur(2rem)',
   WebkitBackdropFilter: 'blur(2rem)',
-  paddingLeft:          '1rem',
-  paddingRight:         '1rem',
-  paddingTop:           '0.25rem',
-  paddingBottom:        '0.25rem',
-  borderRadius:         '0.125rem',
-  color:                'var(--nav-text, #ffffff)',
-  whiteSpace:           'nowrap',
-  transition:           'background-color 0.3s ease, color 0.3s ease',
-  textDecoration:       'none',
-  display:              'flex',
-  alignItems:           'center',
-  justifyContent:       'center',
+  paddingLeft: '1rem',
+  paddingRight: '1rem',
+  paddingTop: '0.25rem',
+  paddingBottom: '0.25rem',
+  borderRadius: '0.125rem',
+  color: 'var(--nav-text, #ffffff)',
+  whiteSpace: 'nowrap',
+  transition: 'background-color 0.3s ease, color 0.3s ease',
+  textDecoration: 'none',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
 }
 
 // ─── GOOEY SVG FILTER — referenced by PrimaryButton ──────────────────────────
@@ -71,9 +71,9 @@ const GooeyFilterDef = () => (
 function HamburgerIcon() {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <rect x="4" y="10"    width="24" height="1.5" rx="0.75" fill="currentColor" />
+      <rect x="4" y="10" width="24" height="1.5" rx="0.75" fill="currentColor" />
       <rect x="4" y="15.25" width="24" height="1.5" rx="0.75" fill="currentColor" />
-      <rect x="4" y="20.5"  width="24" height="1.5" rx="0.75" fill="currentColor" />
+      <rect x="4" y="20.5" width="24" height="1.5" rx="0.75" fill="currentColor" />
     </svg>
   )
 }
@@ -81,25 +81,25 @@ function HamburgerIcon() {
 function CloseIcon() {
   return (
     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-      <line x1="8"  y1="8"  x2="24" y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-      <line x1="24" y1="8"  x2="8"  y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="8" y1="8" x2="24" y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <line x1="24" y1="8" x2="8" y2="24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   )
 }
 
 // ─── COMPONENT ────────────────────────────────────────────────────────────────
 export default function Navbar() {
-  const headerRef  = useRef<HTMLElement>(null)
-  const menuRef    = useRef<HTMLDivElement>(null)
-  const linkRefs   = useRef<(HTMLAnchorElement | null)[]>([])
+  const headerRef = useRef<HTMLElement>(null)
+  const menuRef = useRef<HTMLDivElement>(null)
+  const linkRefs = useRef<(HTMLAnchorElement | null)[]>([])
   const ctaWrapRef = useRef<HTMLDivElement>(null)
-  const tlRef      = useRef<gsap.core.Timeline | null>(null)
+  const tlRef = useRef<gsap.core.Timeline | null>(null)
   const [menuOpen, setMenuOpen] = useState(false)
 
   // ── Light / dark IntersectionObserver ──────────────────────────────────────
   useLayoutEffect(() => {
     const lightSet = new Set<Element>()
-    const darkSet  = new Set<Element>()
+    const darkSet = new Set<Element>()
 
     const apply = () => {
       if (darkSet.size > 0) {
@@ -139,26 +139,26 @@ export default function Navbar() {
     setMenuOpen(true)
     document.body.style.overflow = 'hidden'
 
-    const menu  = menuRef.current
+    const menu = menuRef.current
     const links = linkRefs.current.filter(Boolean)
-    const cta   = ctaWrapRef.current
+    const cta = ctaWrapRef.current
     if (!menu) return
 
     tlRef.current?.kill()
-    gsap.set(menu,         { autoAlpha: 0 })
+    gsap.set(menu, { autoAlpha: 0 })
     gsap.set([links, cta], { y: 28, autoAlpha: 0 })
 
     tlRef.current = gsap.timeline()
-      .to(menu,  { autoAlpha: 1, duration: 0.35, ease: 'power2.out' })
-      .to(links, { y: 0, autoAlpha: 1, stagger: 0.09, duration: 0.5,  ease: 'power3.out' }, '-=0.15')
-      .to(cta,   { y: 0, autoAlpha: 1,              duration: 0.4,  ease: 'power2.out' }, '-=0.25')
+      .to(menu, { autoAlpha: 1, duration: 0.35, ease: 'power2.out' })
+      .to(links, { y: 0, autoAlpha: 1, stagger: 0.09, duration: 0.5, ease: 'power3.out' }, '-=0.15')
+      .to(cta, { y: 0, autoAlpha: 1, duration: 0.4, ease: 'power2.out' }, '-=0.25')
   }
 
   // ── Close ─────────────────────────────────────────────────────────────────
   const closeMenu = () => {
-    const menu  = menuRef.current
+    const menu = menuRef.current
     const links = linkRefs.current.filter(Boolean)
-    const cta   = ctaWrapRef.current
+    const cta = ctaWrapRef.current
 
     tlRef.current?.kill()
     tlRef.current = gsap.timeline({
@@ -168,7 +168,7 @@ export default function Navbar() {
       },
     })
       .to([links, cta], { y: -10, autoAlpha: 0, stagger: 0.03, duration: 0.18, ease: 'power2.in' })
-      .to(menu,         { autoAlpha: 0,                          duration: 0.25, ease: 'power2.in' }, '-=0.08')
+      .to(menu, { autoAlpha: 0, duration: 0.25, ease: 'power2.in' }, '-=0.08')
   }
 
   return (
@@ -210,10 +210,10 @@ export default function Navbar() {
         /* Mobile: ≤809px — smaller logo, tighter side padding (12px) */
         @media (max-width: 809px) {
           .sixdx-logo       { height: 40px; width: 97.913px; }
-          header.sixdx-nav  { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
-          .sixdx-menu-bar   { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
-          .sixdx-menu-links { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
-          .sixdx-menu-cta   { padding-left: 0.75rem !important; padding-right: 0.75rem !important; }
+          header.sixdx-nav  { padding-left: calc(0.5rem) !important; padding-right: calc(0.5rem) !important; }
+          .sixdx-menu-bar   { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+          .sixdx-menu-links { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
+          .sixdx-menu-cta   { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
         }
       `}</style>
 
@@ -227,20 +227,22 @@ export default function Navbar() {
         className="sixdx-nav"
         aria-label="Site navigation"
         style={{
-          position:      'fixed',
-          top:           0,
-          left:          0,
-          right:         0,
-          zIndex:        50,
-          display:       'flex',
-          alignItems:    'center',
-          width:         '100%',
-          maxWidth:      '90rem',
-          margin:        '0 auto',
-          paddingLeft:   '1.75rem',
-          paddingRight:  '1.75rem',
-          paddingTop:    '1rem',
-          paddingBottom: '1rem',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 50,
+          display: 'flex',
+          alignItems: 'center',
+          width: '100%',
+          maxWidth: '90rem',
+          margin: '0 auto',
+          paddingLeft: '4px',
+          paddingRight: '4px',
+          paddingTop: '4px',
+          paddingBottom: '4px',
+          borderRadius: '1rem',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
         {/* ── Logo ─────────────────────────────────────────────────────────── */}
@@ -249,15 +251,15 @@ export default function Navbar() {
             className="sixdx-logo"
             aria-label="SixDX"
             style={{
-              backgroundColor:    'var(--nav-text, #ffffff)',
-              WebkitMaskImage:    'url(/logo.svg)',
-              maskImage:          'url(/logo.svg)',
-              WebkitMaskSize:     'contain',
-              maskSize:           'contain',
+              backgroundColor: 'var(--nav-text, #ffffff)',
+              WebkitMaskImage: 'url(/logo.svg)',
+              maskImage: 'url(/logo.svg)',
+              WebkitMaskSize: 'contain',
+              maskSize: 'contain',
               WebkitMaskPosition: 'center',
-              WebkitMaskRepeat:   'no-repeat',
-              maskRepeat:         'no-repeat',
-              transition:         'background-color 0.3s ease',
+              WebkitMaskRepeat: 'no-repeat',
+              maskRepeat: 'no-repeat',
+              transition: 'background-color 0.3s ease',
             }}
           />
         </a>
@@ -279,7 +281,7 @@ export default function Navbar() {
               {item.label}
             </a>
           ))}
-          <PrimaryButton label={CTA.label} href={CTA.href} variant="white" themeAware expanded />
+          <ClarteButton label={CTA.label} href={CTA.href} className="clarte-button--nav" stretch />
         </nav>
 
         {/* ── Tablet / mobile: hamburger ───────────────────────────────────── */}
@@ -289,12 +291,12 @@ export default function Navbar() {
           aria-expanded={menuOpen}
           onClick={openMenu}
           style={{
-            background:     'none',
-            border:         'none',
-            cursor:         'pointer',
-            padding:        0,
-            color:          'var(--nav-text, #ffffff)',
-            alignItems:     'center',
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 0,
+            color: 'var(--nav-text, #ffffff)',
+            alignItems: 'center',
             justifyContent: 'center',
           }}
         >
@@ -313,41 +315,41 @@ export default function Navbar() {
         aria-label="Navigation menu"
         aria-hidden={!menuOpen}
         style={{
-          position:      'fixed',
-          inset:         0,
-          zIndex:        200,
-          background:    '#0a0a0a',
-          display:       'flex',
+          position: 'fixed',
+          inset: 0,
+          zIndex: 200,
+          background: '#0a0a0a',
+          display: 'flex',
           flexDirection: 'column',
-          visibility:    'hidden',
-          opacity:       0,
+          visibility: 'hidden',
+          opacity: 0,
         }}
       >
         {/* Header bar: logo + close */}
         <div
           className="sixdx-menu-bar"
           style={{
-            display:        'flex',
-            alignItems:     'center',
+            display: 'flex',
+            alignItems: 'center',
             justifyContent: 'space-between',
-            padding:        '1rem 1.75rem',
-            flexShrink:     0,
+            padding: '1rem 1.75rem',
+            flexShrink: 0,
           }}
         >
           <a href="/" aria-label="SixDX home" onClick={closeMenu} style={{ display: 'flex' }}>
             <div
               aria-label="SixDX"
               style={{
-                height:             '3rem',
-                width:              '7.3rem',
-                backgroundColor:    '#ffffff',
-                WebkitMaskImage:    'url(/logo.svg)',
-                maskImage:          'url(/logo.svg)',
-                WebkitMaskSize:     'contain',
-                maskSize:           'contain',
+                height: '3rem',
+                width: '7.3rem',
+                backgroundColor: '#ffffff',
+                WebkitMaskImage: 'url(/logo.svg)',
+                maskImage: 'url(/logo.svg)',
+                WebkitMaskSize: 'contain',
+                maskSize: 'contain',
                 WebkitMaskPosition: 'center',
-                WebkitMaskRepeat:   'no-repeat',
-                maskRepeat:         'no-repeat',
+                WebkitMaskRepeat: 'no-repeat',
+                maskRepeat: 'no-repeat',
               }}
             />
           </a>
@@ -356,13 +358,13 @@ export default function Navbar() {
             aria-label="Close navigation menu"
             onClick={closeMenu}
             style={{
-              background:     'none',
-              border:         'none',
-              cursor:         'pointer',
-              padding:        0,
-              color:          '#ffffff',
-              display:        'flex',
-              alignItems:     'center',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 0,
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
             }}
           >
@@ -375,12 +377,12 @@ export default function Navbar() {
           className="sixdx-menu-links"
           aria-label="Mobile navigation"
           style={{
-            flex:           1,
-            display:        'flex',
-            flexDirection:  'column',
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
-            padding:        '2rem 1.75rem',
-            gap:            '8px',
+            padding: '2rem 1.75rem',
+            gap: '0.25rem',
           }}
         >
           {NAV_ITEMS.map((item, i) => (
@@ -390,17 +392,17 @@ export default function Navbar() {
               ref={el => { linkRefs.current[i] = el }}
               onClick={closeMenu}
               style={{
-                fontFamily:     fonts.marund,
-                fontSize:       'clamp(2rem, 6vw, 3rem)',
-                lineHeight:     1.05,
-                letterSpacing:  '-0.03em',
-                color:          '#ffffff',
+                fontFamily: fonts.marund,
+                fontSize: 'clamp(2rem, 6vw, 3rem)',
+                lineHeight: 1.05,
+                letterSpacing: '-0.03em',
+                color: '#ffffff',
                 textDecoration: 'none',
-                display:        'block',
-                padding:        '0.5rem 0',
-                borderTop:      i === 0 ? '1px solid rgba(255,255,255,0.22)' : 'none',
-                borderBottom:   '1px solid rgba(255,255,255,0.22)',
-                transition:     'opacity 0.2s ease',
+                display: 'block',
+                padding: '0.5rem 0',
+                borderTop: i === 0 ? '1px solid rgba(255,255,255,0.22)' : 'none',
+                borderBottom: '1px solid rgba(255,255,255,0.22)',
+                transition: 'opacity 0.2s ease',
               }}
               onMouseEnter={e => (e.currentTarget.style.opacity = '0.45')}
               onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -415,12 +417,12 @@ export default function Navbar() {
           ref={ctaWrapRef}
           className="sixdx-menu-cta"
           style={{
-            padding:    '1.75rem',
+            padding: '1.75rem',
             flexShrink: 0,
-            borderTop:  '1px solid rgba(255,255,255,0.08)',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
           }}
         >
-          <PrimaryButton label={CTA.label} href={CTA.href} variant="brand" onClick={closeMenu} />
+          <ClarteButton label={CTA.label} href={CTA.href} fullWidth onClick={closeMenu} />
         </div>
       </div>
     </>

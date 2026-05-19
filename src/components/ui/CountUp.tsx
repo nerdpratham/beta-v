@@ -1,26 +1,12 @@
 // ─── COUNT-UP — SixDX ────────────────────────────────────────────────────────
-// Animates a number from 0 → target value exactly once.
+// Animates a number: 0 → 100 (rush) → target value (settle).
 //
 // Trigger: IMPERATIVE only — the parent calls countUpRef.current.start().
-// This decouples the counter from IntersectionObserver timing and lets the
-// parent (e.g. StackSection's GSAP onComplete) fire it at precisely the right
-// moment — after the card's entrance animation has finished.
 //
 // Usage:
 //   const ref = useRef<CountUpHandle>(null)
 //   <CountUp ref={ref} value={68} suffix="%" />
-//   ref.current?.start()   ← call this whenever you're ready
-//
-// Props:
-//   value      — target number                                (required)
-//   suffix     — text appended after, e.g. '%'               (default '')
-//   prefix     — text prepended before, e.g. '$'             (default '')
-//   duration   — tween duration in seconds                   (default 1.6)
-//   delay      — seconds to wait after start() is called     (default 0)
-//   decimals   — decimal places shown while counting         (default 0)
-//   ease       — any GSAP ease string                        (default 'power2.out')
-//   className  — forwarded to the <span>
-//   style      — forwarded to the <span>
+//   ref.current?.start()
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
@@ -28,7 +14,6 @@ import type { CSSProperties } from 'react'
 import { gsap } from '../../animations/gsap.config'
 
 export interface CountUpHandle {
-  /** Kick off the count-up animation. Safe to call multiple times — only runs once. */
   start: () => void
 }
 
@@ -52,17 +37,15 @@ const CountUp = forwardRef<CountUpHandle, CountUpProps>(function CountUp(
     duration = 1.6,
     delay    = 0,
     decimals = 0,
-    ease     = 'power2.out',
     className,
     style,
   },
   ref,
 ) {
-  const spanRef     = useRef<HTMLSpanElement>(null)
-  const hasStarted  = useRef(false)
-  const tweenRef    = useRef<gsap.core.Tween | null>(null)
+  const spanRef    = useRef<HTMLSpanElement>(null)
+  const hasStarted = useRef(false)
+  const tlRef      = useRef<gsap.core.Timeline | null>(null)
 
-  // ── Expose start() to parent via ref ─────────────────────────────────────
   useImperativeHandle(ref, () => ({
     start() {
       if (hasStarted.current) return
@@ -71,41 +54,45 @@ const CountUp = forwardRef<CountUpHandle, CountUpProps>(function CountUp(
       const el = spanRef.current
       if (!el) return
 
-      // Reduced-motion: snap immediately, no tween
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        const display = decimals > 0 ? value.toFixed(decimals) : String(value)
-        el.textContent = `${prefix}${display}${suffix}`
+        el.textContent = `${prefix}${decimals > 0 ? value.toFixed(decimals) : String(value)}${suffix}`
         return
       }
 
       const counter = { val: 0 }
+      const fmt = (n: number) =>
+        `${prefix}${decimals > 0 ? n.toFixed(decimals) : String(Math.round(n))}${suffix}`
 
-      tweenRef.current = gsap.to(counter, {
-        val:      value,
-        duration,
-        delay,
-        ease,
-        onUpdate() {
-          const display = decimals > 0
-            ? counter.val.toFixed(decimals)
-            : String(Math.round(counter.val))
-          el.textContent = `${prefix}${display}${suffix}`
-        },
-        onComplete() {
-          // Snap to exact value — avoids floating-point drift at the end
-          const display = decimals > 0 ? value.toFixed(decimals) : String(value)
-          el.textContent = `${prefix}${display}${suffix}`
-        },
+      // Split duration: 55% rushing to 100, 45% settling to target
+      const rushDur   = duration * 0.55
+      const settleDur = duration * 0.45
+
+      tlRef.current = gsap.timeline({ delay })
+
+      // Phase 1 — rush 0 → 100
+      tlRef.current.to(counter, {
+        val: 100,
+        duration: rushDur,
+        ease: 'power2.in',
+        onUpdate() { el.textContent = fmt(counter.val) },
+      })
+
+      // Phase 2 — settle 100 → actual value
+      tlRef.current.to(counter, {
+        val: value,
+        duration: settleDur,
+        ease: 'power3.out',
+        onUpdate()  { el.textContent = fmt(counter.val) },
+        onComplete() { el.textContent = fmt(value) },
       })
     },
   }))
 
-  // Set the static "zero" label on mount so the slot isn't blank
   useEffect(() => {
     if (spanRef.current) {
       spanRef.current.textContent = `${prefix}0${suffix}`
     }
-    return () => { tweenRef.current?.kill() }
+    return () => { tlRef.current?.kill() }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

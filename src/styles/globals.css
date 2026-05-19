@@ -44,6 +44,126 @@ html.lenis, html.lenis body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
+   CLARTE BUTTON
+   Anchor-based CTA with rolling-text + arrow hover animation.
+   Structure: .clarte-button > [bg | text-wrap[text, text-clone] | arrow-wrap[arrow, arrow-clone]]
+   Hover: dark bg slides up from below; both text and arrow roll up; clone (white) slides in.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.clarte-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  border-radius: 0.125rem;
+  background-color: #ffffff;
+  color: #000000;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Sliding background fill — rises from bottom on hover */
+.clarte-button-bg {
+  position: absolute;
+  inset: 0;
+  background-color: var(--clarte-hover-bg, #0a0a0a);
+  transform: translateY(101%);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+.clarte-button:hover .clarte-button-bg {
+  transform: translateY(0);
+}
+
+/* Text wrap — clips to one line; stacks real text above clone */
+.clarte-button-text-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 1.4em; /* 1 line at lineHeight 1.4 */
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+.clarte-button-text {
+  display: block;
+  line-height: 1.4;
+  flex-shrink: 0;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button-text-clone {
+  display: block;
+  line-height: 1.4;
+  flex-shrink: 0;
+  color: var(--clarte-hover-text, #ffffff);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button:hover .clarte-button-text,
+.clarte-button:hover .clarte-button-text-clone {
+  transform: translateY(-100%);
+}
+
+/* Arrow wrap — clips to 16×16 SVG; stacks arrow above clone */
+.clarte-button-arrow-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 1rem;
+  width: 1rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+}
+.clarte-button-arrow {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button-arrow-clone {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  color: var(--clarte-hover-text, #ffffff);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.clarte-button:hover .clarte-button-arrow,
+.clarte-button:hover .clarte-button-arrow-clone {
+  transform: translateY(-100%);
+}
+
+/* Nav variant — matches glass-pill sizing; inherits nav CSS vars for theme awareness */
+.clarte-button--nav {
+  background-color: var(--cta-bg, #ffffff);
+  color: var(--cta-text, #000000);
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.clarte-button--nav .clarte-button-bg {
+  background-color: var(--clarte-hover-bg, #0a0a0a);
+}
+.clarte-button--nav .clarte-button-text-clone,
+.clarte-button--nav .clarte-button-arrow-clone {
+  color: var(--clarte-hover-text, #ffffff);
+}
+
+/* Nav hover vars — dark sections: black fill / white text; light: darker brand / white text */
+header.sixdx-nav {
+  --clarte-hover-bg:   #0a0a0a;
+  --clarte-hover-text: #ffffff;
+}
+header.sixdx-nav.theme-light {
+  --clarte-hover-bg:   #a83919;
+  --clarte-hover-text: #ffffff;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
    RESPONSIVE OVERRIDES
    Desktop (≥1200px) — untouched. All component inline styles govern.
    Tablet  (810–1199px) — multi-column layouts collapse to stacked/2-col.
@@ -112,6 +232,30 @@ html.lenis, html.lenis body {
 @media (max-width: 809px) {
   .work-section { padding: 60px 16px !important; }
   .work-row > * { flex: 0 0 100% !important; height: 300px !important; }
+}
+
+/* ── How SixDX Works Section ────────────────────────────────────────────── */
+@media (max-width: 809px) {
+  .how-sixdx-works {
+    padding: 60px 16px !important;
+    min-height: 100svh !important;
+  }
+  .how-sixdx-header {
+    max-width: 100% !important;
+  }
+  .how-sixdx-grid {
+    grid-template-columns: 1fr !important;
+    margin-top: 32px !important;
+  }
+  .how-sixdx-step-panel,
+  .how-sixdx-visual-panel {
+    min-height: 300px !important;
+  }
+  .how-sixdx-body-card {
+    left: 12px !important;
+    right: 12px !important;
+    bottom: 12px !important;
+  }
 }
 
 /* ── What We Create Section ─────────────────────────────────────────────── */
