@@ -31,7 +31,7 @@ export default function ClarteButton({
       onClick={onClick}
       style={{
         ...textStyles.bodyMedium,
-        alignSelf: stretch ? 'stretch' : 'center',
+        alignSelf: stretch ? 'stretch' : 'flex-start',
         width: fullWidth ? '100%' : undefined,
       }}
     >

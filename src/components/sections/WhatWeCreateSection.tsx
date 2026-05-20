@@ -30,7 +30,7 @@ const T = {
 // ═══════════════════════════════════════════════════════════════════════════════
 // ── CONTENT  — edit only this block
 // ═══════════════════════════════════════════════════════════════════════════════
-export interface ServiceItem {
+interface ServiceItem {
   /** Displayed at 22.65 px HN — left side of the details row */
   title: string
   /** Split into lines for the clip-mask animation — right side of details row */
@@ -48,25 +48,25 @@ const IMG_1 = 'https://www.figma.com/api/mcp/asset/d1b0dc8d-bf34-4f06-844b-40288
 const IMG_2 = 'https://images.unsplash.com/photo-1773332585815-f106a5d6ed6c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 const IMG_3 = 'https://images.unsplash.com/photo-1446776653964-20c1d3a81b06?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
 
-export const SERVICES: ServiceItem[] = [
+const SERVICES: ServiceItem[] = [
   {
-    title: 'SOP-based modules',
+    title: 'Operations, Maintenance & Safety SOP Animations',
     bodyLines: [
-      'Every environment is built from your site documentation, P&IDs, and technical drawings. Nothing is approximated for the camera.',
+      'Our SOP-based 3D animations convert complex operational, maintenance, and safety procedures into clear visual training modules. Each animation demonstrates process steps, equipment interactions, operational sequences, and critical safety precautions in realistic industrial environments. These modules help industries standardize training, reduce human error, improve workforce understanding, and accelerate skill development across plant operations.',
     ],
     media: { type: 'image', src: IMG_1, alt: 'SOP-based modules' },
   },
   {
-    title: 'Incident reconstruction',
+    title: 'LFF (Learning From Failure) Based Animations',
     bodyLines: [
-      'Every environment is built from your site documentation, P&IDs, and technical drawings. Nothing is approximated for the camera.',
+      'LFF-based 3D animations transform equipment failure investigation reports into engaging visual learning experiences. They recreate how failures occurred, identify technical or procedural gaps, and demonstrate root causes along with preventive measures. These animations help organizations institutionalize learning, prevent repeat incidents, and strengthen operational reliability and safety culture.',
     ],
     media: { type: 'image', src: IMG_2, alt: 'Incident reconstruction' },
   },
   {
-    title: 'Plant familiarisation walkthrough',
+    title: 'Human Fatality & Accident Reconstruction Animations',
     bodyLines: [
-      'Every environment is built from your site documentation, P&IDs, and technical drawings. Nothing is approximated for the camera.  ',
+      'Human fatality and accident reconstruction animations recreate real industrial and road accident scenarios using realistic 3D environments and human simulations. Based on investigation findings, they visually demonstrate how incidents occurred, the unsafe acts involved, and how such events could have been prevented. These animations improve safety awareness, strengthen compliance, and reduce repeat human-error incidents',
     ],
     media: { type: 'image', src: IMG_3, alt: 'Plant familiarisation' },
   },
@@ -152,7 +152,7 @@ export default function WhatWeCreateSection() {
       cancelAnimationFrame(rafId)
       fills.forEach(f => gsap.killTweensOf(f))
     }
-  }, [])
+  }, [N])
 
   return (
     <>
@@ -227,9 +227,10 @@ export default function WhatWeCreateSection() {
               {/* ── IMAGE ────────────────────────────────────────────────── */}
               <div
                 style={{
-                  flex    : 1,
-                  position: 'relative',
-                  overflow: 'hidden',
+                  height    : '75svh',
+                  flexShrink: 0,
+                  position  : 'relative',
+                  overflow  : 'hidden',
                   background: '#0a0a0a',
                 }}
               >
@@ -253,7 +254,7 @@ export default function WhatWeCreateSection() {
                       width     : '100%',
                       height    : '100%',
                       objectFit : 'cover',
-                      objectPosition: 'bottom',  // matches Figma object-bottom
+                      objectPosition: 'center',
                     }}
                   />
                 )}
@@ -303,13 +304,12 @@ export default function WhatWeCreateSection() {
               </div>
 
               {/* ── DETAILS ROW (Figma 323:200) ────────────────────────── */}
-              {/* padding 24px top (matches 24px gap in Figma), 28px sides   */}
               <div className="wwc-details-bar" style={{
-                flexShrink    : 0,
+                flex          : 1,
                 display       : 'flex',
                 alignItems    : 'flex-start',
                 justifyContent: 'space-between',
-                padding       : '24px 28px',
+                padding       : '24px 28px 40px',
                 background    : colors.white,
                 borderTop     : `1px solid ${T.border}`,
                 boxSizing     : 'border-box',
@@ -331,8 +331,9 @@ export default function WhatWeCreateSection() {
                   ...textStyles.label,
                   color    : colors.ink,
                   opacity  : 0.5,
-                  width    : 325,
-                  flexShrink: 0,
+                  flex     : 1,
+                  maxWidth : 600,
+                  marginLeft: 40,
                 }}>
                   {item.bodyLines.join(' ')}
                 </p>

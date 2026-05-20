@@ -30,8 +30,6 @@ const CTA = { label: 'Get in touch', href: '#contact' }
 const GLASS_ITEM: React.CSSProperties = {
   ...textStyles.bodyMedium,
   backgroundColor: 'var(--nav-bg, rgba(0,0,0,0.16))',
-  backdropFilter: 'blur(2rem)',
-  WebkitBackdropFilter: 'blur(2rem)',
   paddingLeft: '1rem',
   paddingRight: '1rem',
   paddingTop: '0.25rem',
@@ -126,14 +124,6 @@ export default function Navbar() {
     return () => { lightObs.disconnect(); darkObs.disconnect() }
   }, [])
 
-  // ── Escape key closes menu ─────────────────────────────────────────────────
-  useLayoutEffect(() => {
-    if (!menuOpen) return
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
-    window.addEventListener('keydown', onKey)
-    return () => window.removeEventListener('keydown', onKey)
-  }, [menuOpen]) // eslint-disable-line react-hooks/exhaustive-deps
-
   // ── Open ──────────────────────────────────────────────────────────────────
   const openMenu = () => {
     setMenuOpen(true)
@@ -171,23 +161,33 @@ export default function Navbar() {
       .to(menu, { autoAlpha: 0, duration: 0.25, ease: 'power2.in' }, '-=0.08')
   }
 
+  // ── Escape key closes menu ─────────────────────────────────────────────────
+  useLayoutEffect(() => {
+    if (!menuOpen) return
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closeMenu() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [menuOpen])
+
   return (
     <>
       <style>{`
         /* ── Theme CSS variables ─────────────────────────────────────────── */
         header.sixdx-nav {
-          --nav-bg:       rgba(0,0,0,0.16);
-          --nav-text:     #ffffff;
-          --nav-bg-hover: rgba(0,0,0,0.30);
-          --cta-bg:       #ffffff;
-          --cta-text:     #000000;
+          --nav-bg:        rgba(255,255,255,0.08);
+          --nav-bar-bg:    rgba(10,10,10,0.20);
+          --nav-text:      #ffffff;
+          --nav-bg-hover:  rgba(255,255,255,0.16);
+          --cta-bg:        #ffffff;
+          --cta-text:      #000000;
         }
         header.sixdx-nav.theme-light {
-          --nav-bg:       rgba(255,255,255,0.16);
-          --nav-text:     #1c0b05;
-          --nav-bg-hover: rgba(255,255,255,0.30);
-          --cta-bg:       #cc4d22;
-          --cta-text:     #ffffff;
+          --nav-bg:        rgba(0,0,0,0.06);
+          --nav-bar-bg:    rgba(255,255,255,0.75);
+          --nav-text:      #1c0b05;
+          --nav-bg-hover:  rgba(0,0,0,0.10);
+          --cta-bg:        #cc4d22;
+          --cta-text:      #ffffff;
         }
 
         /* ── Logo — Figma-exact sizes per breakpoint ─────────────────────── */
@@ -204,7 +204,6 @@ export default function Navbar() {
           .nav-hamburger   { display: flex; margin-left: auto; }
           .sixdx-logo-link { margin-right: 0; }
           .sixdx-logo      { height: 48px; width: 117.496px; }
-          header.sixdx-nav { max-width: none; }
         }
 
         /* Mobile: ≤809px — smaller logo, tighter side padding (12px) */
@@ -241,8 +240,12 @@ export default function Navbar() {
           paddingRight: '4px',
           paddingTop: '4px',
           paddingBottom: '4px',
-          borderRadius: '1rem',
+          borderRadius: 0,
+          background: 'var(--nav-bar-bg, rgba(10,10,10,0.55))',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
           borderBottom: '1px solid rgba(255,255,255,0.08)',
+          transition: 'background 0.3s ease',
         }}
       >
         {/* ── Logo ─────────────────────────────────────────────────────────── */}
