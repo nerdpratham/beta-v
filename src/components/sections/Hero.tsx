@@ -11,7 +11,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '../../animations/gsap.config'
 // import heroVideo from '../../assets/video/cosmos-scrub.mp4'
-const heroVideo = '/video/ABB_cut_mid.mp4'
+const heroVideo = '/video/turbine-scrub.mp4'
 import { fonts, colors } from '../../styles/tokens'
 
 // ─── RESPONSIVE TEXT TOKENS (Figma-exact) ────────────────────────────────────
@@ -195,7 +195,6 @@ export default function Hero() {
     scrollCtx: gsap.Context | null
     mountTween: gsap.core.Tween | null
     resizeTimer: number
-    videoUrl: string | null
     // gsap.matchMedia() instance — killed on unmount
     mediaMatcher: { kill: () => void } | null
   }>({
@@ -204,7 +203,6 @@ export default function Hero() {
     scrollCtx: null,
     mountTween: null,
     resizeTimer: 0,
-    videoUrl: null,
     mediaMatcher: null,
   })
 
@@ -251,9 +249,12 @@ export default function Hero() {
               s.mountTween?.kill()
               s.mountTween = null
             },
-            onUpdate: (self) => setVideoTime(self.progress),
           },
         })
+
+        // Video currentTime driven by the smoothed timeline — stays in sync with text
+        const proxy = { t: 0 }
+        tl.to(proxy, { t: 1, ease: 'none', duration: 1, onUpdate: () => setVideoTime(proxy.t) }, 0)
 
         // Overlay darkens subtly as video progresses
         tl.to(overlayRef.current, { opacity: 0.55, ease: 'none', duration: 1 }, 0)
@@ -315,18 +316,8 @@ export default function Hero() {
         video.preload = 'auto'
         video.loop = false
 
-        const loadVideo = async () => {
-          try {
-            const res = await fetch(heroVideo)
-            const blob = await res.blob()
-            s.videoUrl = URL.createObjectURL(blob)
-            video.src = s.videoUrl
-          } catch {
-            video.src = heroVideo
-          }
-          video.load()
-        }
-        void loadVideo()
+        video.src = heroVideo
+        video.load()
 
         // All chars start transparent
         s.mountCtx?.revert()
@@ -355,7 +346,6 @@ export default function Hero() {
           s.scrollCtx?.revert()
           s.scrollCtx = null
           video.removeEventListener('loadedmetadata', buildScrollTimeline)
-          if (s.videoUrl) { URL.revokeObjectURL(s.videoUrl); s.videoUrl = null }
         }
       })
 
@@ -474,10 +464,6 @@ export default function Hero() {
       s.mediaMatcher?.kill()
       s.mountCtx?.revert()
       s.scrollCtx?.revert()
-      if (s.videoUrl) {
-        URL.revokeObjectURL(s.videoUrl)
-        s.videoUrl = null
-      }
       video.removeEventListener('loadedmetadata', buildScrollTimeline)
     }
   }, [])

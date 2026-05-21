@@ -209,7 +209,7 @@ export default function Navbar() {
         /* Mobile: ≤809px — smaller logo, tighter side padding (12px) */
         @media (max-width: 809px) {
           .sixdx-logo       { height: 40px; width: 97.913px; }
-          header.sixdx-nav  { padding-left: calc(0.5rem) !important; padding-right: calc(0.5rem) !important; }
+          header.sixdx-nav  { padding-left: 1rem !important; padding-right: 1rem !important; }
           .sixdx-menu-bar   { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
           .sixdx-menu-links { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
           .sixdx-menu-cta   { padding-left: 0.5rem !important; padding-right: 0.5rem !important; }
@@ -236,8 +236,8 @@ export default function Navbar() {
           width: '100%',
           maxWidth: '90rem',
           margin: '0 auto',
-          paddingLeft: '4px',
-          paddingRight: '4px',
+          paddingLeft: '28px',
+          paddingRight: '28px',
           paddingTop: '4px',
           paddingBottom: '4px',
           borderRadius: 0,
