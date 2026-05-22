@@ -16,18 +16,16 @@ import { colors, textStyles } from '../../styles/tokens'
 const HEADING  = 'The Work'
 const SUBTITLE = 'Three environments. Three industries. Each built from client site documentation.'
 
-const VIDEO = '/video/cosmos.mp4'
-
 const PROJECTS: VideoDistortionCardProps[][] = [
   [
-    { videoSrc: VIDEO, title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
-    { videoSrc: VIDEO, title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
-    { videoSrc: VIDEO, title: 'Hall Isolation',                tag: 'Oil & Gas' },
+    { videoSrc: '/video/vid%201.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: '/video/vid%202.mp4', title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: '/video/vid%203.mp4', title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
   [
-    { videoSrc: VIDEO, title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
-    { videoSrc: VIDEO, title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
-    { videoSrc: VIDEO, title: 'Hall Isolation',                tag: 'Oil & Gas' },
+    { videoSrc: '/video/vid%204.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: '/video/vid%205.mp4', title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: '/video/vid%201.mp4', title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
 ]
 
