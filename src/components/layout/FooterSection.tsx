@@ -14,13 +14,15 @@
 //   On close : form slides out + video resumes
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useRef, useState, type FormEvent, type ChangeEvent } from 'react'
+import { useRef, useState, useEffect, type FormEvent, type ChangeEvent } from 'react'
+import { gsap } from '../../animations/gsap.config'
 import { fonts, colors, textStyles } from '../../styles/tokens'
 import ClarteButton from '../ui/ClarteButton'
 
 // ── Video ─────────────────────────────────────────────────────────────────────
 // To swap: change the filename here. Video must be in /public/video/
-const NEWSLETTER_VIDEO = '/video/newsletter-video.mp4'
+const NEWSLETTER_VIDEO   = '/video/footermp4.mp4'
+const FOOTER_SCRUB_VIDEO = '/video/footer-scrub.mp4'
 
 // ── Footer gradient ───────────────────────────────────────────────────────────
 // Extracted from Figma. Edit the color stops here to adjust the gradient.
@@ -275,6 +277,69 @@ function NewsletterCard() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// ── FOOTER SCROLL-SCRUB VIDEO
+// ═══════════════════════════════════════════════════════════════════════════════
+
+function FooterVideoScrub() {
+  const wrapperRef = useRef<HTMLDivElement>(null)
+  const videoRef   = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current
+    const video   = videoRef.current
+    if (!wrapper || !video) return
+
+    // Drive video.currentTime + scale from native scroll — same pattern as WhatWeCreateSection.
+    // Lenis calls window.scrollTo() each frame, which fires native 'scroll' on window.
+    const setScale = gsap.quickSetter(video, 'scale')
+
+    const handleScroll = () => {
+      const rect   = wrapper.getBoundingClientRect()
+      const travel = wrapper.offsetHeight - window.innerHeight
+      if (travel <= 0) return
+
+      // progress 0 → wrapper top at viewport top
+      // progress 1 → wrapper bottom at viewport bottom
+      const progress = Math.max(0, Math.min(1, -rect.top / travel))
+
+      // zoom: 1.0 at start → 1.35 at end
+      setScale(1 + progress * 0.35)
+
+      if (!video.duration || Number.isNaN(video.duration)) return
+      const target = Math.max(0, Math.min(video.duration - 0.001, progress * video.duration))
+      if (Math.abs(video.currentTime - target) > 0.001) video.currentTime = target
+    }
+
+    video.src = FOOTER_SCRUB_VIDEO
+    video.load()
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    const rafId = requestAnimationFrame(handleScroll)
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      cancelAnimationFrame(rafId)
+    }
+  }, [])
+
+  return (
+    // Wrapper provides scroll distance — 400svh gives 3 viewport-heights of scrub
+    <div ref={wrapperRef} data-footer-scrub style={{ height: '400svh' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100svh', overflow: 'hidden' }}>
+        <video
+          ref={videoRef}
+          muted
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center center', willChange: 'transform' }}
+        />
+      </div>
+    </div>
+  )
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // ── MAIN COMPONENT
 // ═══════════════════════════════════════════════════════════════════════════════
 
@@ -391,6 +456,9 @@ export default function FooterSection() {
         </div>
 
       </div>{/* end GRADIENT BLOCK */}
+
+      {/* ── Scroll-scrubbed video ────────────────────────────────────────── */}
+      <FooterVideoScrub />
 
       {/* ══════════════════════════════════════════════════════════════════════
           FOOTER BOTTOM — policies (left) + copyright (right)

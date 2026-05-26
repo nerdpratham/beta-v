@@ -162,12 +162,7 @@ const DistortionMaterial = shaderMaterial(
       float dist  = distance(uv, u_mouse);
       float bulge = smoothstep(0.8, 0.0, dist) * u_hover * 0.15;
 
-      float wavePos    = u_wave_progress * 4.0 - 1.0;
-      float distToWave = abs((vUv.x + vUv.y) - wavePos);
-      float waveCrest  = smoothstep(1.2, 0.0, distToWave);
-      float waveZ      = waveCrest * 0.2;
-
-      pos.z += bulge + waveZ;
+      pos.z += bulge;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     }
   `,
@@ -206,21 +201,11 @@ const DistortionMaterial = shaderMaterial(
       float mouseWave = sin(dist * 8.0 - u_time * 2.0)
                         * 0.007 * u_hover * smoothstep(0.6, 0.0, dist);
 
-      // diagonal sweep wave
-      float wavePos    = u_wave_progress * 4.0 - 1.0;
-      float distToWave = abs((vUv.x + vUv.y) - wavePos);
-      float waveCrest  = smoothstep(1.2, 0.0, distToWave);
-      float wavePeak   = pow(smoothstep(0.6, 0.0, distToWave), 1.5);
-      float globalWave = waveCrest * 0.08;
-
-      vec2 dir       = normalize(aspectUv - aspectMouse);
-      vec2 globalDir = normalize(vec2(1.0, 1.0));
-      vec2 uv2       = baseUv + dir * mouseWave - globalDir * globalWave;
+      vec2 dir = normalize(aspectUv - aspectMouse);
+      vec2 uv2 = baseUv + dir * mouseWave;
 
       vec4 col = texture2D(u_tex, uv2);
       col.rgb  *= 1.0 + u_hover * 0.1;
-      float waveShimmer = 0.0; // Raise this to restore the white wave shimmer.
-      col.rgb   = mix(col.rgb, vec3(1.0), waveShimmer * (wavePeak * 0.15 + waveCrest * 0.05));
 
       gl_FragColor = col;
     }
@@ -292,20 +277,12 @@ function WebGLVideoScene({ videoSrc, isHovered, mousePos }: SceneProps) {
 
     if (isHovered) {
       tlRef.current?.kill()
-      tlRef.current = gsap.timeline({
-        onComplete: () => { void video.play().catch(() => {}) },
-      })
-      tlRef.current.to(matRef.current.uniforms.u_wave_progress, {
-        value: 1, duration: 2.0, ease: 'sine.inOut',
-      })
+      void video.play().catch(() => {})
       gsap.to(matRef.current.uniforms.u_hover, {
         value: 1, duration: 0.8, ease: 'power3.out',
       })
     } else {
       tlRef.current?.kill()
-      gsap.to(matRef.current.uniforms.u_wave_progress, {
-        value: 0, duration: 2.0, ease: 'sine.inOut',
-      })
       gsap.to(matRef.current.uniforms.u_hover, {
         value: 0, duration: 0.8, ease: 'power3.inOut',
         onComplete: () => { video.pause(); video.currentTime = 0.1 },

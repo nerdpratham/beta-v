@@ -18,8 +18,8 @@ const SUBTITLE = 'Three environments. Three industries. Each built from client s
 
 const PROJECTS: VideoDistortionCardProps[][] = [
   [
-    { videoSrc: '/video/vid%201.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
-    { videoSrc: '/video/vid%202.mp4', title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: '/video/ABB_mini.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: '/video/vid2.0.mp4',  title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
     { videoSrc: '/video/vid%203.mp4', title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
   [
