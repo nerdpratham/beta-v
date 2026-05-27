@@ -187,7 +187,7 @@ export default function Hero() {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const textRefs = useRef<(HTMLDivElement | null)[]>([])
+  const textRefs = useRef<(HTMLDivElement | null)[]>([]) 
 
   const state = useRef<{
     allChars: HTMLElement[][]
@@ -203,6 +203,7 @@ export default function Hero() {
     scrollCtx: null,
     mountTween: null,
     resizeTimer: 0,
+
     mediaMatcher: null,
   })
 
@@ -483,6 +484,10 @@ export default function Hero() {
           ref={videoRef}
           src={heroVideo}
           className="absolute inset-0 w-full h-full object-cover"
+          style={{
+            objectPosition: '50% 0%',
+            transform: 'translateY(10%) scale(1.2)',
+          }}
           playsInline
           muted
           preload="auto"
@@ -579,7 +584,7 @@ export default function Hero() {
           className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-60"
         >
           <span
-            className="hero-scroll-shimmer text-[14px] tracking-[0em]"
+            className="hero-scroll-shimmer text-[14px] tracking-normal"
             data-label="Scroll"
             style={{ fontFamily: fonts.hn }}
           >

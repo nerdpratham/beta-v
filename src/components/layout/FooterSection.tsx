@@ -302,8 +302,8 @@ function FooterVideoScrub() {
       // progress 1 → wrapper bottom at viewport bottom
       const progress = Math.max(0, Math.min(1, -rect.top / travel))
 
-      // zoom: 1.0 at start → 1.35 at end
-      setScale(1 + progress * 0.35)
+      // zoom: 1.0 at start → 1.6 at end
+      setScale(1 + progress * 0.6)
 
       if (!video.duration || Number.isNaN(video.duration)) return
       const target = Math.max(0, Math.min(video.duration - 0.001, progress * video.duration))
@@ -332,7 +332,7 @@ function FooterVideoScrub() {
           playsInline
           preload="auto"
           aria-hidden="true"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: 'center center', willChange: 'transform' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: '62% 40%', willChange: 'transform' }}
         />
       </div>
     </div>

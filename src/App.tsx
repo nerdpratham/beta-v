@@ -1,6 +1,7 @@
 // ─── APP ROOT — SixDX ────────────────────────────────────────────────────────
 import { useEffect } from 'react'
 import { initScroll, destroyScroll } from './animations/scroll'
+import Preloader     from './components/ui/Preloader'
 import Navbar        from './components/layout/Navbar'
 import Hero          from './components/sections/Hero'
 import StackSection  from './components/sections/StackSection'
@@ -20,6 +21,7 @@ export default function App() {
 
   return (
     <main className="relative bg-[#0a0a0a]">
+      <Preloader />
       <Navbar />
       <Hero />
       <StackSection />
