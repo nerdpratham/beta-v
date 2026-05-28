@@ -166,6 +166,7 @@ const s = {
   } satisfies CSSProperties,
 }
 
+
 // ═════════════════════════════════════════════════════════════════════════════
 export default function HowSixDXWorks() {
   const wrapperRef = useRef<HTMLDivElement>(null)
@@ -200,6 +201,21 @@ export default function HowSixDXWorks() {
           to   { opacity: 1; transform: translateY(0); }
         }
         .how-num { animation: howNumIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+        @media (max-width: 767px) {
+          .how-sixdx-works      { padding: 56px 14px 16px !important; }
+          .how-sixdx-header     { max-width: 100% !important; }
+          .how-sixdx-heading    { font-size: 34px !important; line-height: 1.1 !important; }
+          .how-sixdx-copy       { font-size: 13px !important; margin-top: 10px !important; line-height: 1.4 !important; }
+          .how-sixdx-grid       { grid-template-columns: 1fr !important; grid-template-rows: auto 1fr !important; gap: 6px !important; margin-top: 16px !important; }
+          .how-sixdx-step-panel { padding: 18px 20px !important; justify-content: flex-start !important; gap: 10px !important; }
+          .how-num              { font-size: 52px !important; }
+          .how-step-list        { gap: 8px !important; }
+          .how-sixdx-step-text  { font-size: 13px !important; line-height: 1.3 !important; }
+          .how-sixdx-visual-panel { padding: 16px !important; }
+          .how-sixdx-body-card  { padding: 14px !important; }
+          .how-body-text        { font-size: 12px !important; line-height: 1.45 !important; max-width: 100% !important; }
+        }
       `}</style>
 
       {/* Scroll travel container — section pins inside for 5 × 100svh */}
@@ -212,8 +228,8 @@ export default function HowSixDXWorks() {
           style={s.section}
         >
           <div className="how-sixdx-header" style={s.header}>
-            <h2 style={s.heading}>How SixDX works</h2>
-            <p style={s.copy}>
+            <h2 className="how-sixdx-heading" style={s.heading}>How SixDX works</h2>
+            <p className="how-sixdx-copy" style={s.copy}>
               Training is not a single format. Different failures need different kinds of film. The work
               below describes the six production types SixDX builds &mdash; each one engineered for a
               specific learning outcome, each one delivered to the same cinematic standard.
@@ -233,10 +249,11 @@ export default function HowSixDXWorks() {
                 {padNum(activeStep)}
               </span>
 
-              <div style={s.stepList}>
+              <div className="how-step-list" style={s.stepList}>
                 {STEPS.map((step, i) => (
                   <p
                     key={step.label}
+                    className="how-sixdx-step-text"
                     style={{
                       ...s.stepText,
                       color: i === activeStep
@@ -263,6 +280,7 @@ export default function HowSixDXWorks() {
                   {STEPS.map((step, i) => (
                     <p
                       key={step.label}
+                      className="how-body-text"
                       style={{
                         ...s.bodyText,
                         gridColumn: '1',

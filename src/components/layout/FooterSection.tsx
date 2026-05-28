@@ -21,8 +21,9 @@ import ClarteButton from '../ui/ClarteButton'
 
 // ── Video ─────────────────────────────────────────────────────────────────────
 // To swap: change the filename here. Video must be in /public/video/
-const NEWSLETTER_VIDEO   = '/video/footermp4.mp4'
-const FOOTER_SCRUB_VIDEO = '/video/footer-scrub.mp4'
+const MACHINE_VIDEO = '/video/Machaine000.Png.mp41111.webm'
+const NEWSLETTER_VIDEO = MACHINE_VIDEO
+const FOOTER_SCRUB_VIDEO = MACHINE_VIDEO
 
 // ── Footer gradient ───────────────────────────────────────────────────────────
 // Extracted from Figma. Edit the color stops here to adjust the gradient.
@@ -289,32 +290,39 @@ function FooterVideoScrub() {
     const video   = videoRef.current
     if (!wrapper || !video) return
 
-    // Drive video.currentTime + scale from native scroll — same pattern as WhatWeCreateSection.
-    // Lenis calls window.scrollTo() each frame, which fires native 'scroll' on window.
     const setScale = gsap.quickSetter(video, 'scale')
+
+    let targetProgress = 0
+    let rafId: number
 
     const handleScroll = () => {
       const rect   = wrapper.getBoundingClientRect()
       const travel = wrapper.offsetHeight - window.innerHeight
       if (travel <= 0) return
+      targetProgress = Math.max(0, Math.min(1, -rect.top / travel))
+    }
 
-      // progress 0 → wrapper top at viewport top
-      // progress 1 → wrapper bottom at viewport bottom
-      const progress = Math.max(0, Math.min(1, -rect.top / travel))
+    type VideoWithFastSeek = HTMLVideoElement & { fastSeek?: (t: number) => void }
+    const tick = () => {
+      setScale(1 + targetProgress * 0.6)
 
-      // zoom: 1.0 at start → 1.6 at end
-      setScale(1 + progress * 0.6)
+      if (video.readyState >= 2 && video.duration && !Number.isNaN(video.duration)) {
+        const targetTime = Math.max(0, Math.min(video.duration - 0.001, targetProgress * video.duration))
+        if (Math.abs(video.currentTime - targetTime) > 0.016) {
+          const v = video as VideoWithFastSeek
+          if (typeof v.fastSeek === 'function') v.fastSeek(targetTime)
+          else video.currentTime = targetTime
+        }
+      }
 
-      if (!video.duration || Number.isNaN(video.duration)) return
-      const target = Math.max(0, Math.min(video.duration - 0.001, progress * video.duration))
-      if (Math.abs(video.currentTime - target) > 0.001) video.currentTime = target
+      rafId = requestAnimationFrame(tick)
     }
 
     video.src = FOOTER_SCRUB_VIDEO
     video.load()
 
     window.addEventListener('scroll', handleScroll, { passive: true })
-    const rafId = requestAnimationFrame(handleScroll)
+    rafId = requestAnimationFrame(tick)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
