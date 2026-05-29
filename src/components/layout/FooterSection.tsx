@@ -20,10 +20,14 @@ import { fonts, colors, textStyles } from '../../styles/tokens'
 import ClarteButton from '../ui/ClarteButton'
 
 // ── Video ─────────────────────────────────────────────────────────────────────
-// To swap: change the filename here. Video must be in /public/video/
-const MACHINE_VIDEO = '/video/Machaine000.Png.mp41111.webm'
+const MACHINE_VIDEO    = '/video/Machaine000.Png.mp41111.webm'
 const NEWSLETTER_VIDEO = MACHINE_VIDEO
-const FOOTER_SCRUB_VIDEO = MACHINE_VIDEO
+
+// ── Frame sequence (footer scrub) ────────────────────────────────────────────
+const FRAME_COUNT = 140
+const FRAME_URLS  = Array.from({ length: FRAME_COUNT }, (_, i) =>
+  `/Picflow%20Images%20May%2028/machaine000.png${String(i + 1).padStart(4, '0')}.webp`
+)
 
 // ── Footer gradient ───────────────────────────────────────────────────────────
 // Extracted from Figma. Edit the color stops here to adjust the gradient.
@@ -278,20 +282,76 @@ function NewsletterCard() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-// ── FOOTER SCROLL-SCRUB VIDEO
+// ── FOOTER SCROLL-SCRUB — canvas frame sequence
 // ═══════════════════════════════════════════════════════════════════════════════
 
 function FooterVideoScrub() {
   const wrapperRef = useRef<HTMLDivElement>(null)
-  const videoRef   = useRef<HTMLVideoElement>(null)
+  const canvasRef  = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const wrapper = wrapperRef.current
-    const video   = videoRef.current
-    if (!wrapper || !video) return
+    const canvas  = canvasRef.current
+    if (!wrapper || !canvas) return
 
-    const setScale = gsap.quickSetter(video, 'scale')
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
 
+    // ── Preload all frames eagerly ─────────────────────────────────────────
+    const images: HTMLImageElement[] = FRAME_URLS.map(src => {
+      const img = new Image()
+      img.src = src
+      return img
+    })
+
+    // ── Resize canvas internal resolution to match CSS size ───────────────
+    const syncSize = () => {
+      const dpr = window.devicePixelRatio || 1
+      const w = canvas.offsetWidth  * dpr
+      const h = canvas.offsetHeight * dpr
+      // Only reassign when dimensions actually change — assigning always clears the canvas
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width  = w
+        canvas.height = h
+      }
+    }
+    syncSize()
+    const ro = new ResizeObserver(syncSize)
+    ro.observe(canvas)
+
+    // ── Draw a frame with object-fit:cover behaviour ───────────────────────
+    const drawFrame = (img: HTMLImageElement) => {
+      if (!img.complete || img.naturalWidth === 0) return
+      const cw = canvas.width,  ch = canvas.height
+      const iw = img.naturalWidth, ih = img.naturalHeight
+      let sx, sy, sw, sh
+      if (iw / ih > cw / ch) {
+        sh = ih; sw = sh * (cw / ch)
+        sx = (iw - sw) / 2; sy = 0
+      } else {
+        sw = iw; sh = sw * (ch / cw)
+        sx = 0; sy = (ih - sh) / 2
+      }
+      ctx.clearRect(0, 0, cw, ch)
+      ctx.drawImage(img, sx, sy, sw, sh, 0, 0, cw, ch)
+    }
+
+    // ── Find the nearest loaded frame to avoid blank canvas during load ────
+    const drawBestFrame = (targetIdx: number) => {
+      if (images[targetIdx].complete && images[targetIdx].naturalWidth > 0) {
+        drawFrame(images[targetIdx])
+        return
+      }
+      for (let d = 1; d < FRAME_COUNT; d++) {
+        const lo = images[Math.max(0, targetIdx - d)]
+        if (lo.complete && lo.naturalWidth > 0) { drawFrame(lo); return }
+        const hi = images[Math.min(FRAME_COUNT - 1, targetIdx + d)]
+        if (hi.complete && hi.naturalWidth > 0) { drawFrame(hi); return }
+      }
+    }
+
+    // ── Scroll tracking + RAF loop ─────────────────────────────────────────
+    const setScale    = gsap.quickSetter(canvas, 'scale')
     let targetProgress = 0
     let rafId: number
 
@@ -302,45 +362,31 @@ function FooterVideoScrub() {
       targetProgress = Math.max(0, Math.min(1, -rect.top / travel))
     }
 
-    type VideoWithFastSeek = HTMLVideoElement & { fastSeek?: (t: number) => void }
     const tick = () => {
       setScale(1 + targetProgress * 0.6)
-
-      if (video.readyState >= 2 && video.duration && !Number.isNaN(video.duration)) {
-        const targetTime = Math.max(0, Math.min(video.duration - 0.001, targetProgress * video.duration))
-        if (Math.abs(video.currentTime - targetTime) > 0.016) {
-          const v = video as VideoWithFastSeek
-          if (typeof v.fastSeek === 'function') v.fastSeek(targetTime)
-          else video.currentTime = targetTime
-        }
-      }
-
+      const idx = Math.min(FRAME_COUNT - 1, Math.floor(targetProgress * FRAME_COUNT))
+      drawBestFrame(idx)
       rafId = requestAnimationFrame(tick)
     }
 
-    video.src = FOOTER_SCRUB_VIDEO
-    video.load()
-
     window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
     rafId = requestAnimationFrame(tick)
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       cancelAnimationFrame(rafId)
+      ro.disconnect()
     }
   }, [])
 
   return (
-    // Wrapper provides scroll distance — 400svh gives 3 viewport-heights of scrub
-    <div ref={wrapperRef} data-footer-scrub style={{ height: '400svh' }}>
-      <div style={{ position: 'sticky', top: 0, height: '100svh', overflow: 'hidden' }}>
-        <video
-          ref={videoRef}
-          muted
-          playsInline
-          preload="auto"
+    <div ref={wrapperRef} data-footer-scrub style={{ height: '400svh', background: '#1c0b05' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100svh', overflow: 'hidden', background: '#1c0b05' }}>
+        <canvas
+          ref={canvasRef}
           aria-hidden="true"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transformOrigin: '62% 40%', willChange: 'transform' }}
+          style={{ width: '100%', height: '100%', display: 'block', transformOrigin: '62% 40%', willChange: 'transform' }}
         />
       </div>
     </div>
@@ -465,7 +511,7 @@ export default function FooterSection() {
 
       </div>{/* end GRADIENT BLOCK */}
 
-      {/* ── Scroll-scrubbed video ────────────────────────────────────────── */}
+      {/* ── Scroll-scrubbed frame animation — seamless continuation of footer gradient ── */}
       <FooterVideoScrub />
 
       {/* ══════════════════════════════════════════════════════════════════════
