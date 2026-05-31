@@ -382,7 +382,10 @@ function FooterVideoScrub() {
 
   return (
     <div ref={wrapperRef} data-footer-scrub style={{ height: '400svh', background: '#1c0b05' }}>
-      <div style={{ position: 'sticky', top: 0, height: '100svh', overflow: 'hidden', background: '#1c0b05' }}>
+      <div style={{
+        position: 'sticky', top: 0, height: '100svh', overflow: 'hidden',
+        background: 'linear-gradient(180deg, #3d1508 0%, #7a2d10 28%, #c45020 55%, #7a2d10 78%, #1c0b05 100%)',
+      }}>
         <canvas
           ref={canvasRef}
           aria-hidden="true"
