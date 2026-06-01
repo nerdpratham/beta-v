@@ -18,14 +18,14 @@ const SUBTITLE = 'Three environments. Three industries. Each built from client s
 
 const PROJECTS: VideoDistortionCardProps[][] = [
   [
-    { videoSrc: '/video/ABB_mini.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
-    { videoSrc: '/video/vid2.0.mp4',  title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
-    { videoSrc: '/video/vid%203.mp4', title: 'Hall Isolation',                tag: 'Oil & Gas' },
+    { videoSrc: 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287936/ABB_mini01_uavm3b.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287265/vid_2_myerzi.mp4',      title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287265/vid_3_x54bll.mp4',      title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
   [
-    { videoSrc: '/video/vid%204.mp4', title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
-    { videoSrc: '/video/vid%205.mp4', title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
-    { videoSrc: '/video/vid%201.mp4', title: 'Hall Isolation',                tag: 'Oil & Gas' },
+    { videoSrc: 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287275/vid_4_y7izvf.mp4',      title: 'Integrated Mill Furnace Floor', tag: 'Steel'     },
+    { videoSrc: 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287266/vid_5_df5pnu.mp4',      title: 'Shutdown Procedure',            tag: 'Oil & Gas' },
+    { videoSrc: 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287263/vid_1_f6goo6.mp4',      title: 'Hall Isolation',                tag: 'Oil & Gas' },
   ],
 ]
 

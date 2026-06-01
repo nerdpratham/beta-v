@@ -11,7 +11,7 @@
 import { useEffect, useRef } from 'react'
 import { gsap, ScrollTrigger } from '../../animations/gsap.config'
 // import heroVideo from '../../assets/video/cosmos-scrub.mp4'
-const heroVideo = '/video/turbine-scrub.mp4'
+const heroVideo = 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287272/turbine-scrub_lxh9uu.mp4'
 import { fonts, colors } from '../../styles/tokens'
 
 // ─── RESPONSIVE TEXT TOKENS (Figma-exact) ────────────────────────────────────

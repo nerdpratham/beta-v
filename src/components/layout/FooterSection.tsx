@@ -20,8 +20,7 @@ import { fonts, colors, textStyles } from '../../styles/tokens'
 import ClarteButton from '../ui/ClarteButton'
 
 // ── Video ─────────────────────────────────────────────────────────────────────
-const MACHINE_VIDEO    = '/video/Machaine000.Png.mp41111.webm'
-const NEWSLETTER_VIDEO = MACHINE_VIDEO
+const NEWSLETTER_VIDEO = 'https://res.cloudinary.com/dj5sqxkpj/video/upload/v1780287262/newsletter-video_v1nwq9.mp4'
 
 // ── Frame sequence (footer scrub) ────────────────────────────────────────────
 const FRAME_COUNT = 140
